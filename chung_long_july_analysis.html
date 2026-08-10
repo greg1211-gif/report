@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chung Long - Phân Tích Tháng 7/2026 | 仲龙 7月分析报告</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0f2f5; color: #1a1a2e; line-height: 1.6; overflow-x: hidden; }
+.container { max-width: 1100px; margin: 0 auto; padding: 20px; }
+
+/* Header */
+.header { background: linear-gradient(135deg, #1a5276 0%, #2980b9 50%, #27ae60 100%); color: #fff; padding: 40px 30px; border-radius: 16px; margin-bottom: 24px; position: relative; overflow: hidden; }
+.header::after { content: ''; position: absolute; top: -50%; right: -20%; width: 400px; height: 400px; background: rgba(255,255,255,0.05); border-radius: 50%; }
+.header h1 { font-size: 28px; margin-bottom: 4px; }
+.header .subtitle { font-size: 16px; opacity: 0.9; }
+.header .company-badge { display: inline-block; background: rgba(255,255,255,0.2); padding: 6px 16px; border-radius: 20px; margin-top: 12px; font-size: 13px; }
+
+/* Tabs */
+.tab-nav { display: flex; gap: 4px; margin-bottom: 20px; background: #fff; padding: 6px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+.tab-btn { flex: 1; padding: 10px 16px; border: none; background: transparent; cursor: pointer; border-radius: 8px; font-size: 14px; font-weight: 600; color: #666; transition: all 0.3s; }
+.tab-btn.active { background: #1a5276; color: #fff; }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+/* Cards */
+.card { background: #fff; border-radius: 12px; padding: 24px; margin-bottom: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+.card h2 { font-size: 18px; color: #1a5276; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 2px solid #d4e6f1; }
+.card h3 { font-size: 15px; color: #333; margin: 16px 0 10px; }
+.section-title { font-size: 14px; color: #1a5276; font-weight: 700; margin: 16px 0 10px; padding: 6px 12px; background: #d4e6f1; border-radius: 6px; display: inline-block; }
+
+/* Metrics Grid */
+.metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 20px; }
+.metric-card { background: linear-gradient(135deg, #f8f9ff 0%, #d4e6f1 100%); border-radius: 10px; padding: 16px; text-align: center; border: 1px solid #aed6f1; }
+.metric-card.positive { background: linear-gradient(135deg, #f0fdf0 0%, #d4edda 100%); border-color: #b7e4c7; }
+.metric-card.warning { background: linear-gradient(135deg, #fff8e1 0%, #fff3cd 100%); border-color: #ffc107; }
+.metric-card.danger { background: linear-gradient(135deg, #fef0f0 0%, #fde0e0 100%); border-color: #ea4335; }
+.metric-card .value { font-size: 28px; font-weight: 700; color: #1a5276; }
+.metric-card .label { font-size: 12px; color: #666; margin-top: 4px; }
+.metric-card .change { font-size: 13px; font-weight: 600; margin-top: 6px; }
+.change.up { color: #34a853; }
+.change.down { color: #ea4335; }
+.change.neutral { color: #f9ab00; }
+
+/* Table */
+.data-table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 13px; }
+.data-table th { background: #1a5276; color: #fff; padding: 10px 12px; text-align: center; }
+.data-table td { padding: 8px 12px; border-bottom: 1px solid #e8eaed; text-align: center; }
+.data-table tr:nth-child(even) { background: #f8f9fa; }
+.data-table tr:hover { background: #d4e6f1; }
+
+/* Bottleneck */
+.bottleneck-box { background: #fef0f0; border: 1px solid #fad2cf; border-radius: 10px; padding: 16px; margin: 12px 0; }
+.bottleneck-box.opportunity { background: #e8f8f0; border-color: #b7e4c7; }
+.bottleneck-box.warning-box { background: #fff8e1; border-color: #ffe69c; }
+.bottleneck-meter { margin: 10px 0; }
+.meter-label { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+.meter-bar { background: #e8eaed; border-radius: 10px; height: 20px; position: relative; overflow: hidden; }
+.meter-fill { height: 100%; border-radius: 10px; transition: width 0.5s; }
+.meter-value { font-size: 12px; color: #666; margin-top: 2px; }
+
+/* Star Rating */
+.star-section { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin: 16px 0; }
+.star-card { background: #f8f9fa; border-radius: 10px; padding: 14px; border: 1px solid #e8eaed; }
+.star-card h4 { font-size: 13px; color: #1a5276; margin-bottom: 8px; }
+.star-bar { background: #e8eaed; border-radius: 8px; height: 10px; margin: 8px 0; overflow: hidden; }
+.star-bar .fill { height: 100%; border-radius: 8px; }
+.star-bar .fill.green { background: #34a853; }
+.star-bar .fill.orange { background: #f9ab00; }
+.star-bar .fill.red { background: #ea4335; }
+
+/* Recommendations */
+.rec-item { display: flex; gap: 12px; padding: 14px; border-radius: 10px; margin: 10px 0; border: 1px solid #e8eaed; }
+.rec-item.priority-high { background: #fef0f0; border-color: #fad2cf; }
+.rec-item.priority-med { background: #fff8e1; border-color: #ffe69c; }
+.rec-item.priority-low { background: #e8f0fe; border-color: #d2e3fc; }
+.rec-icon { font-size: 24px; flex-shrink: 0; }
+.rec-title { font-weight: 700; font-size: 14px; margin-bottom: 4px; }
+.rec-desc { font-size: 13px; color: #555; }
+.rec-badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; margin-left: 6px; }
+.rec-badge.p0 { background: #ea4335; color: #fff; }
+.rec-badge.p1 { background: #f9ab00; color: #fff; }
+.rec-badge.p2 { background: #34a853; color: #fff; }
+
+/* Bright spots */
+.bright-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+.bright-item { background: #f0fdf0; border: 1px solid #b7e4c7; border-radius: 10px; padding: 16px; text-align: center; }
+.bright-item .check { font-size: 24px; color: #34a853; margin-bottom: 8px; }
+.bright-item .title { font-weight: 700; font-size: 14px; color: #137333; margin-bottom: 6px; }
+.bright-item .detail { font-size: 12px; color: #555; }
+
+/* Keyword section */
+.keyword-tag { display: inline-block; background: #d4e6f1; color: #1a5276; padding: 3px 10px; border-radius: 12px; font-size: 11px; margin: 2px; border: 1px solid #aed6f1; }
+.keyword-tag.hot { background: #fce8e6; color: #c5221f; border-color: #fad2cf; font-weight: 600; }
+.keyword-tag.current { background: #e6f4ea; color: #137333; border-color: #b7e4c7; }
+.keyword-tag.recommended { background: #fff3cd; color: #856404; border-color: #ffe69c; font-weight: 600; }
+.kw-section { margin: 12px 0; }
+
+/* Product analysis */
+.product-card { background: #f8f9fa; border: 1px solid #e8eaed; border-radius: 12px; padding: 20px; margin: 16px 0; }
+.product-card h3 { color: #1a5276; margin-bottom: 12px; }
+.product-info { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; font-size: 13px; }
+.product-info .label { font-weight: 600; color: #666; }
+.product-info .value { color: #333; }
+.issue-box { background: #fef0f0; border-left: 4px solid #ea4335; padding: 12px 16px; margin: 10px 0; border-radius: 0 8px 8px 0; }
+.fix-box { background: #e6f4ea; border-left: 4px solid #34a853; padding: 12px 16px; margin: 10px 0; border-radius: 0 8px 8px 0; }
+
+/* Industry data */
+.industry-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; margin: 16px 0; }
+.industry-card { background: #f8f9fa; border: 1px solid #e8eaed; border-radius: 10px; padding: 16px; }
+.industry-card h4 { font-size: 13px; color: #1a5276; margin-bottom: 8px; }
+
+/* Top Ranking comparison */
+.top-ranking-box { background: #f0f4ff; border: 2px solid #1a5276; border-radius: 12px; padding: 20px; margin: 16px 0; }
+.top-ranking-box h3 { color: #1a5276; margin-bottom: 12px; }
+.comparison-table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 12px; }
+.comparison-table th { background: #1a5276; color: #fff; padding: 8px 10px; }
+.comparison-table td { padding: 6px 10px; border-bottom: 1px solid #e8eaed; }
+.comparison-table tr:nth-child(even) { background: #f0f4ff; }
+
+/* Footer */
+.footer { text-align: center; padding: 20px; color: #999; font-size: 12px; margin-top: 20px; }
+
+.zh { font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif; }
+.zh p { line-height: 1.8; }
+
+/* Chart container */
+.chart-container { position: relative; height: 300px; margin: 20px 0; }
+.chart-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 20px 0; }
+@media (max-width: 768px) { .chart-row { grid-template-columns: 1fr; } }
+
+/* KWA alert */
+.kwa-alert { background: linear-gradient(135deg, #ea4335, #c5221f); color: #fff; padding: 20px; border-radius: 12px; margin: 16px 0; text-align: center; }
+.kwa-alert .amount { font-size: 32px; font-weight: 700; }
+.kwa-alert .label { font-size: 14px; opacity: 0.9; }
+
+/* Product image placeholder */
+.product-img-placeholder { background: linear-gradient(135deg, #e8eaed, #f8f9fa); border: 2px dashed #bdc3c7; border-radius: 12px; padding: 40px; text-align: center; margin: 16px 0; color: #7f8c8d; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="header">
+<h1>CHUNG LONG — Phân Tích Gian Hàng Tháng 7/2026</h1>
+<div class="subtitle">Công Ty TNHH Nhựa Công Nghiệp Chung Long Việt Nam</div>
+<div class="company-badge">Ngành: Construction & Real Estate | Bathroom Accessories | 2 năm trên sàn <span style="background:#34a853;padding:2px 8px;border-radius:10px;margin-left:8px;">Star Boost</span></div>
+</div>
+
+<div class="tab-nav">
+<button class="tab-btn active" onclick="switchTab('vi')">Tiếng Việt</button>
+<button class="tab-btn" onclick="switchTab('zh')">中文</button>
+</div>
+
+<!-- ============ VIETNAMESE TAB ============ -->
+<div id="tab-vi" class="tab-content active">
+<div class="vi">
+
+<!-- TỔNG QUAN -->
+<div class="card">
+<h2>Tổng Quan Gian Hàng — Tháng 7/2026</h2>
+<p>Chung Long đã hoạt động trên Alibaba <strong>hơn 2 năm</strong> (từ 03/2025), chuyên sản xuất phụ kiện phòng tắm nhựa (Bidet, Shower Head, Tank Fittings, Flush Valve...). Gian hàng đang được hưởng <strong>Star-rating Boost</strong> từ sàn, nhưng traffic vẫn ở mức rất thấp so với ngành.</p>
+
+<div class="metrics-grid" style="margin-top:16px">
+<div class="metric-card danger">
+<div class="value">9,131</div>
+<div class="label">Search Exposures (Tháng 7)</div>
+<div class="change down">Chỉ đạt 34.8% TB ngành (26,218)</div>
+</div>
+<div class="metric-card danger">
+<div class="value">156</div>
+<div class="label">UV / Khách truy cập (30 ngày)</div>
+<div class="change down">Chỉ đạt 12% TB ngành (1,302)</div>
+</div>
+<div class="metric-card positive">
+<div class="value">880</div>
+<div class="label">Tổng sản phẩm</div>
+<div class="change up">+19 mới / +222 cập nhật T7</div>
+</div>
+<div class="metric-card positive">
+<div class="value">100%</div>
+<div class="label">Tỷ lệ phản hồi đúng hạn</div>
+<div class="change up">Tốt hơn ngành (92.67%)</div>
+</div>
+</div>
+</div>
+
+<!-- VẤN ĐỀ CỐT LÕI -->
+<div class="card">
+<h2>Vấn Đề Cốt Lõi — Cần Cải Thiện Ngay</h2>
+
+<div class="bottleneck-box">
+<h3 style="color:#c5221f">1. Traffic cực thấp — Chỉ ~35% TB ngành</h3>
+<div class="bottleneck-meter">
+<div class="meter-label">Search Exposures</div>
+<div class="meter-bar"><div class="meter-fill" style="width:35%;background:#ea4335"></div></div>
+<div class="meter-value" style="color:#ea4335">9,131 / 26,218 (TB ngành) — chỉ 34.8%</div>
+</div>
+<div class="bottleneck-meter">
+<div class="meter-label">UV (30 ngày)</div>
+<div class="meter-bar"><div class="meter-fill" style="width:12%;background:#ea4335"></div></div>
+<div class="meter-value" style="color:#ea4335">156 / 1,302 (TB ngành) — chỉ 12%</div>
+</div>
+<div class="bottleneck-meter">
+<div class="meter-label">Direct Clicks</div>
+<div class="meter-bar"><div class="meter-fill" style="width:13%;background:#ea4335"></div></div>
+<div class="meter-value" style="color:#ea4335">77 / 596 (TB ngành) — chỉ 12.9%</div>
+</div>
+<p style="font-size:13px;margin-top:8px"><strong>Nhận xét:</strong> Traffic 3 tháng liên tục quanh 9-10K exposures, không tăng trưởng. UV chỉ ~150/tháng — quá thấp để tạo inquiries. Nguyên nhân chính: <strong>chưa sử dụng KWA</strong> và <strong>keywords chưa tối ưu</strong>.</p>
+</div>
+
+<div class="kwa-alert">
+<div class="label">KWA Balance — Đang KHÔNG sử dụng!</div>
+<div class="amount">VND 35,400,000</div>
+<div class="label">Số dư quảng cáo nằm im — cần kích hoạt NGAY để tăng traffic</div>
+</div>
+
+<div class="bottleneck-box warning-box">
+<h3 style="color:#e37400">2. Sản phẩm mới & cập nhật chưa đủ</h3>
+<p>T7: chỉ <strong>19 sản phẩm mới</strong> và <strong>222 cập nhật</strong>. So với 880 sản phẩm hiện có, tỷ lệ cập nhật còn thấp. Thuật toán Alibaba ưu tiên gian hàng thường xuyên đăng mới và cập nhật.</p>
+<p style="font-size:13px;margin-top:8px"><strong>Khuyến nghị:</strong> Đăng 30-50 sản phẩm mới/tuần, cập nhật 100+ sản phẩm/tuần (thay đổi title, keywords, hình ảnh).</p>
+</div>
+
+<div class="bottleneck-box warning-box">
+<h3 style="color:#e37400">3. RFQ = 51/51 — Sử dụng đầy đủ, cần tối ưu chất lượng</h3>
+<p>Tháng 7: <strong>51/51 RFQ quotes</strong> — đã sử dụng 100% quota. Đây là điểm mạnh! Tuy nhiên, cần đánh giá chất lượng báo giá: tỷ lệ chuyển đổi từ RFQ → inquiry → order như thế nào?</p>
+<p style="font-size:13px;margin-top:8px"><strong>Khuyến nghị:</strong> (1) Rà soát 51 RFQs đã trả lời — follow-up buyers chưa chốt đơn. (2) Phân loại RFQ theo chất lượng (A/B/C). (3) Target T8: duy trì 51/51 + tăng tỷ lệ convert lên 15-20%.</p>
+</div>
+
+<div class="bottleneck-box">
+<h3 style="color:#c5221f">4. Bài Top quá thấp — Chỉ 5/880 sản phẩm</h3>
+<p>Chỉ <strong>5 sản phẩm Top</strong> và <strong>0 sản phẩm Super</strong> trên tổng 880 sản phẩm. Điều này có nghĩa là 99.4% sản phẩm chưa đạt chuẩn chất lượng listing của Alibaba.</p>
+<p style="font-size:13px;margin-top:8px"><strong>Khuyến nghị:</strong> Tối ưu PIS score cho tất cả sản phẩm. Tập trung nâng 50-100 sản phẩm chủ lực lên Top/Super.</p>
+</div>
+
+<div class="bottleneck-box">
+<h3 style="color:#c5221f">5. Keywords chưa được cập nhật</h3>
+<p>Các sản phẩm hiện tại sử dụng keywords cơ bản, chưa bắt kịp xu hướng tìm kiếm. Ví dụ: sản phẩm bidet chỉ dùng "bidet sprayer" trong khi buyers đang tìm "shattaf", "handheld bidet", "toilet sprayer"...</p>
+<p style="font-size:13px;margin-top:8px"><strong>Khuyến nghị:</strong> Xem phần "Gợi ý Keywords" bên dưới để cập nhật cho từng dòng sản phẩm.</p>
+</div>
+</div>
+
+<!-- GỢI Ý KEYWORDS -->
+<div class="card">
+<h2>Gợi Ý Bộ Keywords Theo Dòng Sản Phẩm</h2>
+<p>Dựa trên xu hướng tìm kiếm trên Alibaba và phân tích đối thủ Top Ranking:</p>
+
+<h3 class="section-title">1. Bidet / Shattaf (Sản phẩm chủ lực)</h3>
+<div class="kw-section">
+<strong style="font-size:12px;color:#c5221f">Keywords HOT — Volume cao:</strong><br>
+<span class="keyword-tag hot">bidet sprayer</span>
+<span class="keyword-tag hot">shattaf</span>
+<span class="keyword-tag hot">handheld bidet</span>
+<span class="keyword-tag hot">toilet sprayer</span>
+<span class="keyword-tag hot">bidet spray set</span>
+<span class="keyword-tag hot">hand bidet sprayer</span>
+<span class="keyword-tag hot">bum gun</span>
+</div>
+<div class="kw-section">
+<strong style="font-size:12px;color:#137333">Keywords ngách — Ít cạnh tranh:</strong><br>
+<span class="keyword-tag current">bidet sprayer for toilet</span>
+<span class="keyword-tag current">muslim shower</span>
+<span class="keyword-tag current">health faucet</span>
+<span class="keyword-tag current">shattaf set</span>
+<span class="keyword-tag current">bidet attachment handheld</span>
+<span class="keyword-tag current">portable bidet sprayer</span>
+<span class="keyword-tag current">self-cleaning bidet nozzle</span>
+</div>
+<div class="kw-section">
+<strong style="font-size:12px;color:#856404">Long-tail — Chuyển đổi cao:</strong><br>
+<span class="keyword-tag recommended">ABS plastic bidet sprayer wholesale</span>
+<span class="keyword-tag recommended">chrome shattaf manufacturer Vietnam</span>
+<span class="keyword-tag recommended">OEM bidet sprayer factory</span>
+<span class="keyword-tag recommended">wall mounted bidet spray set bulk</span>
+<span class="keyword-tag recommended">eco-friendly handheld bidet supplier</span>
+</div>
+
+<h3 class="section-title">2. Shower Head</h3>
+<div class="kw-section">
+<strong style="font-size:12px;color:#c5221f">Keywords HOT:</strong><br>
+<span class="keyword-tag hot">shower head</span>
+<span class="keyword-tag hot">hand shower</span>
+<span class="keyword-tag hot">rainfall shower head</span>
+<span class="keyword-tag hot">high pressure shower head</span>
+<span class="keyword-tag hot">bathroom shower</span>
+<span class="keyword-tag hot">ABS shower head</span>
+</div>
+<div class="kw-section">
+<strong style="font-size:12px;color:#137333">Keywords ngách:</strong><br>
+<span class="keyword-tag current">water saving shower head</span>
+<span class="keyword-tag current">chrome hand shower</span>
+<span class="keyword-tag current">single function shower head</span>
+<span class="keyword-tag current">modern bathroom shower</span>
+<span class="keyword-tag recommended">OEM shower head manufacturer Vietnam</span>
+<span class="keyword-tag recommended">plastic shower head factory price</span>
+</div>
+
+<h3 class="section-title">3. Tank Fittings / Flush Valve</h3>
+<div class="kw-section">
+<strong style="font-size:12px;color:#c5221f">Keywords HOT:</strong><br>
+<span class="keyword-tag hot">toilet tank fittings</span>
+<span class="keyword-tag hot">flush valve</span>
+<span class="keyword-tag hot">toilet flush button</span>
+<span class="keyword-tag hot">dual flush valve</span>
+<span class="keyword-tag hot">toilet cistern fittings</span>
+<span class="keyword-tag hot">inlet valve toilet</span>
+</div>
+<div class="kw-section">
+<strong style="font-size:12px;color:#137333">Keywords ngách:</strong><br>
+<span class="keyword-tag current">water saving flush valve</span>
+<span class="keyword-tag current">3/6L dual flush</span>
+<span class="keyword-tag current">toilet tank repair kit</span>
+<span class="keyword-tag current">universal flush valve</span>
+<span class="keyword-tag recommended">OEM toilet tank fittings factory</span>
+<span class="keyword-tag recommended">plastic flush valve manufacturer</span>
+</div>
+
+<h3 class="section-title">4. Toilet Accessories (P Trap, Toilet Seat...)</h3>
+<div class="kw-section">
+<strong style="font-size:12px;color:#c5221f">Keywords HOT:</strong><br>
+<span class="keyword-tag hot">P trap</span>
+<span class="keyword-tag hot">toilet seat</span>
+<span class="keyword-tag hot">bathroom drain</span>
+<span class="keyword-tag hot">slow close toilet seat</span>
+<span class="keyword-tag hot">PVC pipe fittings</span>
+</div>
+<div class="kw-section">
+<strong style="font-size:12px;color:#137333">Keywords ngách:</strong><br>
+<span class="keyword-tag current">bottle trap bathroom</span>
+<span class="keyword-tag current">elongated toilet seat</span>
+<span class="keyword-tag current">soft close toilet seat cover</span>
+<span class="keyword-tag current">lavabo drain connector</span>
+<span class="keyword-tag recommended">OEM bathroom accessories Vietnam</span>
+<span class="keyword-tag recommended">plastic sanitary ware factory</span>
+</div>
+</div>
+
+<!-- PHÂN TÍCH TOP RANKING -->
+<div class="card">
+<h2>Phân Tích Top Ranking — Bài Mẫu Tham Khảo</h2>
+<p>Phân tích sản phẩm Top Ranking ngành Bidet để rút kinh nghiệm cho Chung Long:</p>
+
+<div class="top-ranking-box">
+<h3>Sản phẩm Top Ranking: 2-Function Chrome ABS Shattaf</h3>
+<p style="font-size:13px;margin-bottom:12px"><strong>Link:</strong> <a href="https://www.alibaba.com/product-detail/2-Function-Chrome-ABS-Shattaf-Single_10000029583603.html" target="_blank" style="color:#1a5276">Xem sản phẩm trên Alibaba</a></p>
+
+<div class="product-info">
+<div><span class="label">Title:</span> <span class="value">2-Function Chrome ABS Shattaf - Single Hole Bidet Sprayer with Gray Face</span></div>
+<div><span class="label">Giá:</span> <span class="value">$2.19 - $2.29/piece</span></div>
+<div><span class="label">MOQ:</span> <span class="value">200 pieces</span></div>
+<div><span class="label">Chất liệu:</span> <span class="value">ABS Plastic</span></div>
+<div><span class="label">Lắp đặt:</span> <span class="value">Wall-mounted</span></div>
+<div><span class="label">Xuất xứ:</span> <span class="value">Vietnam</span></div>
+<div><span class="label">Bảo hành:</span> <span class="value">1 Year</span></div>
+<div><span class="label">Đặc điểm:</span> <span class="value">Eco-Friendly, Nozzle Self-cleaning, Easy Installation</span></div>
+</div>
+
+<h3 style="margin-top:16px">So sánh với sản phẩm tương tự của Chung Long:</h3>
+<table class="comparison-table">
+<thead>
+<tr><th>Tiêu chí</th><th>Top Ranking</th><th>Chung Long (tương đương)</th><th>Ghi chú</th></tr>
+</thead>
+<tbody>
+<tr><td>Title</td><td>Ngắn gọn, chứa key features + material + color</td><td>Dài, nhiều tính từ mô tả</td><td style="color:#ea4335">Cần rút ngắn, tập trung keywords</td></tr>
+<tr><td>Giá</td><td>$2.19-2.29 (rõ ràng)</td><td>$1.15 - $3.92/pc (đã chuyển sang USD)</td><td style="color:#34a853">Cạnh tranh, đã hiển thị USD</td></tr>
+<tr><td>MOQ</td><td>200 pcs (vừa phải)</td><td>10-200 pcs</td><td style="color:#34a853">MOQ thấp là lợi thế</td></tr>
+<tr><td>Keywords</td><td>Shattaf, Bidet Sprayer, Chrome ABS</td><td>Bidet, Handheld, Sprayer</td><td style="color:#ea4335">Thiếu "shattaf", "bum gun"</td></tr>
+<tr><td>Images</td><td>Multiple angles + lifestyle</td><td>Product shots</td><td style="color:#f9ab00">Cần thêm lifestyle photos</td></tr>
+<tr><td>Features</td><td>3 key features rõ ràng</td><td>Nhiều tính năng nhưng dàn trải</td><td style="color:#f9ab00">Tập trung 3-5 USP chính</td></tr>
+</tbody>
+</table>
+
+<h3 style="margin-top:16px">Bài học từ Top Ranking:</h3>
+<div class="fix-box">
+<strong>1. Title tối ưu:</strong> "[Số function] + [Material] + [Product Name] + [Key Feature] + [Color/Style]"
+<br>Ví dụ: "2-Function Chrome ABS Shattaf - Single Hole Bidet Sprayer with Gray Face"
+<br><strong>→ Chung Long nên áp dụng:</strong> "ABS Chrome Bidet Sprayer Set - Wall Mounted Handheld Shattaf with Self-Cleaning Nozzle"
+</div>
+<div class="fix-box">
+<strong>2. Giá USD cạnh tranh:</strong> Chung Long đã hiển thị giá USD ($1.15-$3.92/pc) — cạnh tranh hơn Top Ranking ($2.19-2.29). Đây là lợi thế cần highlight trong title và description.
+</div>
+<div class="fix-box">
+<strong>3. 3 Key Features nổi bật:</strong> Thay vì liệt kê 10+ tính năng, chỉ highlight 3 USP mạnh nhất: Eco-Friendly, Self-cleaning, Easy Installation.
+</div>
+<div class="fix-box">
+<strong>4. Hình ảnh:</strong> Top Ranking dùng ảnh góc cạnh đa dạng + ảnh lifestyle (trong phòng tắm thực tế). Chung Long cần bổ sung ảnh context sử dụng.
+</div>
+</div>
+</div>
+
+<!-- STAR RATING -->
+<div class="card">
+<h2>Star Rating — Tận Dụng Boost Để Lên Sao</h2>
+
+<div style="display:flex;align-items:center;gap:16px;margin-bottom:20px;flex-wrap:wrap">
+<div style="background:#d4e6f1;padding:16px 24px;border-radius:12px;text-align:center;flex:1;min-width:140px">
+<div style="font-size:12px;color:#666">Hiện tại</div>
+<div style="font-size:14px;font-weight:600;color:#1a5276;margin-top:4px">Healthy (có boost)</div>
+</div>
+<div style="font-size:28px;color:#1a5276;font-weight:700">&#10140;</div>
+<div style="background:#fff3cd;padding:16px 24px;border-radius:12px;text-align:center;flex:1;min-width:140px;border:2px dashed #f9ab00">
+<div style="font-size:12px;color:#666">Mục tiêu T8-T9</div>
+<div style="font-size:36px;font-weight:700;color:#f9ab00">&#9733;&#9733;</div>
+<div style="font-size:14px;font-weight:600;color:#e37400">2 sao organic</div>
+</div>
+</div>
+
+<h3 class="section-title">4 Chiều Star Rating — Tháng 7</h3>
+<div class="star-section">
+<div class="star-card">
+<h4>Sản phẩm (PIS)</h4>
+<p>Hiện tại: <strong>556 sản phẩm</strong></p>
+<div class="star-bar"><div class="fill orange" style="width:55.6%"></div></div>
+<p style="font-size:12px;color:#f9ab00;font-weight:600">Cần 700 cho level tiếp | Còn thiếu 144</p>
+</div>
+<div class="star-card">
+<h4>Marketing (UV/30 ngày)</h4>
+<p>Hiện tại: <strong>139 UV</strong></p>
+<div class="star-bar"><div class="fill orange" style="width:69.5%"></div></div>
+<p style="font-size:12px">Cần 200 cho level tiếp | <span style="color:#f9ab00;font-weight:700">Còn thiếu 61 UV</span></p>
+</div>
+<div class="star-card">
+<h4>Service (Trả lời buyer)</h4>
+<p>Hiện tại: <strong>8 buyers/30 ngày</strong></p>
+<div class="star-bar"><div class="fill orange" style="width:80%"></div></div>
+<p style="font-size:12px">Cần 10 cho level tiếp | <span style="color:#f9ab00;font-weight:700">Còn thiếu 2 buyers</span></p>
+</div>
+<div class="star-card">
+<h4>Sales (GMV/90 ngày)</h4>
+<p>Hiện tại: <strong>0 USD</strong></p>
+<div class="star-bar"><div class="fill red" style="width:0%"></div></div>
+<p style="font-size:12px">Cần $1,500 cho level 3 | Cần TA order đầu tiên</p>
+</div>
+</div>
+
+<div style="background:#d4e6f1;padding:16px;border-radius:10px;margin-top:16px">
+<strong>Chiến lược lên sao cho Chung Long:</strong>
+<ul style="margin:8px 0 0 20px;font-size:14px">
+<li><strong>Sản phẩm:</strong> Cần thêm 144 sản phẩm PIS达标 → đạt 700. Ưu tiên tối ưu PIS cho 200 sản phẩm hiện có trước.</li>
+<li><strong>Marketing:</strong> Bật KWA → 139 UV → 200 UV chỉ cần thêm ~61 UV từ ads. Dễ dàng với ngân sách 35tr!</li>
+<li><strong>Service:</strong> Chỉ cần thêm 2 buyers nữa → đạt 10. Trả lời TẤT CẢ inquiries + chat + RFQ.</li>
+<li><strong>Sales:</strong> Tạo 1-2 sample orders qua TA để kích hoạt GMV + bonus star.</li>
+</ul>
+</div>
+</div>
+
+<!-- PHÂN TÍCH SẢN PHẨM -->
+<div class="card">
+<h2>Phân Tích Sản Phẩm Top — 10 Sản Phẩm Dẫn Đầu</h2>
+<table class="data-table">
+<thead>
+<tr><th>#</th><th>Sản phẩm</th><th>Exposures</th><th>Clicks</th><th>Inquiries</th><th>Messages</th></tr>
+</thead>
+<tbody>
+<tr><td>1</td><td style="text-align:left;font-size:11px">Rainfall Hand Shower Chrome High Pressure</td><td>155</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>2</td><td style="text-align:left;font-size:11px">Eco-Friendly Shattaf Travel Portable ABS Bidet</td><td>142</td><td>2</td><td>0</td><td>0</td></tr>
+<tr><td>3</td><td style="text-align:left;font-size:11px">Ergonomic Plastic Bidet Sprayer Self-Cleaning</td><td>111</td><td>9</td><td>0</td><td>0</td></tr>
+<tr><td>4</td><td style="text-align:left;font-size:11px">ABS Shattaf Modern Design Spray Set Leak-Proof</td><td>81</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>5</td><td style="text-align:left;font-size:11px">OEM/ODM Plastic WC Seat Soft Slow Fall Down</td><td>77</td><td>1</td><td>0</td><td>0</td></tr>
+<tr><td>6</td><td style="text-align:left;font-size:11px">Factory Supply PVC P Trap Drain Connector</td><td>75</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>7</td><td style="text-align:left;font-size:11px">OEM Customized ABS Wall-Mounted Bidet Sprayer</td><td>73</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>8</td><td style="text-align:left;font-size:11px">OEM 2-Piece ABS Dual Flush Button 3/6L Tank Fittings</td><td>72</td><td>1</td><td>0</td><td>0</td></tr>
+<tr><td>9</td><td style="text-align:left;font-size:11px">SCS221PW3201 Elongated Closed Front Bidet Seat</td><td>70</td><td>2</td><td>0</td><td>0</td></tr>
+<tr><td>10</td><td style="text-align:left;font-size:11px">ABS Shattaf Wall-Mounted Leak-Proof Bidet Spray</td><td>70</td><td>3</td><td>0</td><td>0</td></tr>
+</tbody>
+</table>
+
+<div class="issue-box">
+<strong>Nhận xét:</strong> Tổng 10 sản phẩm top chỉ có 827 exposures, 18 clicks, 0 inquiries. <strong>CTR trung bình chỉ 2.2%</strong> — rất thấp. Nguyên nhân: title chưa hấp dẫn, ảnh chưa thu hút, giá chưa cạnh tranh hoặc không hiển thị rõ.
+</div>
+</div>
+
+<!-- ĐIỂM SÁNG -->
+<div class="card">
+<h2>Điểm Sáng — Lợi Thế Cạnh Tranh</h2>
+<div class="bright-grid">
+<div class="bright-item">
+<div class="check">&#10003;</div>
+<div class="title">Nhà sản xuất trực tiếp</div>
+<div class="detail">Factory tại Đồng Nai, đăng ký KD từ 2007. Kiểm soát chất lượng từ nguyên liệu đến thành phẩm.</div>
+</div>
+<div class="bright-item">
+<div class="check">&#10003;</div>
+<div class="title">Đa dạng sản phẩm</div>
+<div class="detail">880 sản phẩm, 7 nhóm: Bidet, Shower Head, Tank Fittings, Flush Valve, Toilet Seat, P Trap, Desiccants.</div>
+</div>
+<div class="bright-item">
+<div class="check">&#10003;</div>
+<div class="title">Showcase 100%</div>
+<div class="detail">20/20 showcase đều đã sử dụng — tận dụng tốt quyền lợi gian hàng.</div>
+</div>
+<div class="bright-item">
+<div class="check">&#10003;</div>
+<div class="title">Response rate 100%</div>
+<div class="detail">Tỷ lệ phản hồi đúng hạn 100%, thời gian trả lời 0.5h — nhanh hơn ngành (3.5h).</div>
+</div>
+<div class="bright-item">
+<div class="check">&#10003;</div>
+<div class="title">RTS 423 sản phẩm</div>
+<div class="detail">423 sản phẩm RTS với 341 có impressions, 23 clicks. Sẵn sàng cho đơn hàng nhanh.</div>
+</div>
+<div class="bright-item">
+<div class="check">&#10003;</div>
+<div class="title">KWA 35.4tr đã nạp</div>
+<div class="detail">Ngân sách quảng cáo sẵn sàng. Chỉ cần kích hoạt là có traffic ngay.</div>
+</div>
+<div class="bright-item">
+<div class="check">&#10003;</div>
+<div class="title">Star-rating Boost</div>
+<div class="detail">Đang được sàn hỗ trợ boost — cần tận dụng window này để xây nền tảng trước khi hết boost.</div>
+</div>
+<div class="bright-item">
+<div class="check">&#10003;</div>
+<div class="title">0 sản phẩm trùng lặp</div>
+<div class="detail">Gian hàng sạch, không vi phạm policy về duplicate listings.</div>
+</div>
+<div class="bright-item">
+<div class="check">&#10003;</div>
+<div class="title">RFQ 51/51 — 100%</div>
+<div class="detail">Sử dụng đầy đủ quota RFQ. Cần tối ưu chất lượng báo giá và follow-up để tăng tỷ lệ convert.</div>
+</div>
+</div>
+</div>
+
+<!-- DỮ LIỆU NGÀNH -->
+<div class="card">
+<h2>Dữ Liệu Ngành — Bathroom Accessories</h2>
+
+<div class="industry-grid">
+<div class="industry-card">
+<h4>Xu hướng tìm kiếm 2026</h4>
+<p style="font-size:13px"><strong>Bidet/Shattaf:</strong> Tăng mạnh ở thị trường Trung Đông, Đông Nam Á. Keywords "shattaf", "bum gun", "health faucet" trending.</p>
+<p style="font-size:13px;margin-top:6px"><strong>Shower Head:</strong> Xu hướng water-saving, high-pressure, eco-friendly. ABS plastic thay thế kim loại.</p>
+<p style="font-size:13px;margin-top:6px"><strong>Tank Fittings:</strong> Dual flush, water-saving 3/6L là tiêu chuẩn mới. OEM/ODM demand cao.</p>
+</div>
+<div class="industry-card">
+<h4>Giá tham khảo trên Alibaba</h4>
+<p style="font-size:13px"><strong>Bidet Sprayer:</strong> $1.50 - $5.00/pc (wholesale)</p>
+<p style="font-size:13px"><strong>Shower Head:</strong> $2.00 - $8.00/pc</p>
+<p style="font-size:13px"><strong>Tank Fittings:</strong> $0.50 - $3.00/set</p>
+<p style="font-size:13px"><strong>Toilet Seat:</strong> $5.00 - $25.00/pc</p>
+<p style="font-size:12px;color:#666;margin-top:6px">Vietnam origin thường có giá cạnh tranh hơn China 10-15%.</p>
+</div>
+<div class="industry-card">
+<h4>MOQ tham khảo đối thủ</h4>
+<p style="font-size:13px"><strong>Top suppliers:</strong> MOQ 200-500 pcs cho bidet/shower</p>
+<p style="font-size:13px"><strong>Trung bình:</strong> MOQ 100-300 pcs</p>
+<p style="font-size:13px"><strong>Chung Long:</strong> MOQ 10-200 pcs — <span style="color:#34a853;font-weight:600">Lợi thế MOQ thấp!</span></p>
+</div>
+</div>
+
+<h3 class="section-title">Top Ranking Suppliers — Ngành Bathroom Accessories</h3>
+<table class="data-table">
+<thead>
+<tr><th>Nhà cung cấp</th><th>Sản phẩm chính</th><th>MOQ</th><th>Xuất xứ</th><th>Điểm mạnh</th></tr>
+</thead>
+<tbody>
+<tr><td>Ningbo Hi-Tech Leelongs</td><td>Shattaf, Bidet Sets</td><td>100 pcs</td><td>China</td><td>Đa dạng mẫu mã, giá rẻ</td></tr>
+<tr><td>China Sanyin</td><td>Bathroom Accessories</td><td>200 pcs</td><td>China</td><td>Full range, OEM mạnh</td></tr>
+<tr><td>Dongguan Aquamate</td><td>Shower Heads</td><td>500 pcs</td><td>China</td><td>Chuyên shower, chất lượng cao</td></tr>
+<tr style="background:#e6f4ea;font-weight:600"><td>Chung Long Plastic</td><td>Bidet, Shower, Tank Fittings</td><td>10 pcs</td><td>Vietnam</td><td>MOQ thấp, factory direct, đa nguyên liệu</td></tr>
+</tbody>
+</table>
+</div>
+
+<!-- KẾ HOẠCH HÀNH ĐỘNG -->
+<div class="card">
+<h2>Kế Hoạch Hành Động 30 Ngày</h2>
+
+<div class="rec-item priority-high">
+<div class="rec-icon">&#128200;</div>
+<div>
+<div class="rec-title">Kích hoạt KWA — Bid 20+ keywords NGAY <span class="rec-badge p0">P0 Tuần 1</span></div>
+<div class="rec-desc">VND 35,400,000 đang nằm im! Bid ngay các keywords: bidet sprayer, shattaf, shower head, toilet tank fittings, flush valve, P trap, toilet seat... Target: UV từ 156 → 300+ trong 2 tuần. Đây là hành động #1 ưu tiên.</div>
+</div>
+</div>
+
+<div class="rec-item priority-high">
+<div class="rec-icon">&#128221;</div>
+<div>
+<div class="rec-title">Cập nhật Keywords cho TẤT CẢ sản phẩm <span class="rec-badge p0">P0 Tuần 1-2</span></div>
+<div class="rec-desc">Áp dụng bộ keywords gợi ý ở trên cho từng dòng sản phẩm. Ưu tiên 50 sản phẩm top trước. Thêm keywords: shattaf, bum gun, health faucet, water saving, OEM Vietnam...</div>
+</div>
+</div>
+
+<div class="rec-item priority-high">
+<div class="rec-icon">&#128247;</div>
+<div>
+<div class="rec-title">Tối ưu Title & Hình ảnh sản phẩm Top 10 <span class="rec-badge p0">P0 Tuần 1</span></div>
+<div class="rec-desc">Áp dụng công thức title từ Top Ranking: "[Function] + [Material] + [Product] + [Key Feature]". Thêm ảnh lifestyle, ảnh góc cạnh đa dạng. Hiển thị giá USD thay vì MXN.</div>
+</div>
+</div>
+
+<div class="rec-item priority-high">
+<div class="rec-icon">&#128230;</div>
+<div>
+<div class="rec-title">Đăng 30-50 sản phẩm mới/tuần <span class="rec-badge p0">P0 Liên tục</span></div>
+<div class="rec-desc">Target: đạt 700+ sản phẩm PIS达标 trong 4 tuần. Tạo biến thể: khác weight (1kg/2.5kg/5kg), khác color, khác packaging. Mỗi biến thể = 1 listing mới với keywords riêng.</div>
+</div>
+</div>
+
+<div class="rec-item priority-high">
+<div class="rec-icon">&#128172;</div>
+<div>
+<div class="rec-title">Tối ưu RFQ 51/51 — Follow-up & Convert <span class="rec-badge p0">P0 Tuần 1</span></div>
+<div class="rec-desc">Đã sử dụng 100% quota RFQ — rất tốt! Giờ cần tối ưu chất lượng: (1) Rà soát 51 RFQs đã trả lời, follow-up buyers chưa chốt đơn. (2) Phân loại A/B/C theo chất lượng. (3) Target T8: duy trì 51/51 + tăng tỷ lệ convert 15-20%. Đây là kênh inquiries chất lượng cao nhất.</div>
+</div>
+</div>
+
+<div class="rec-item priority-med">
+<div class="rec-icon">&#11088;</div>
+<div>
+<div class="rec-title">Tạo đơn TA đầu tiên — Kích hoạt Sales dimension <span class="rec-badge p1">P1 Tuần 2-4</span></div>
+<div class="rec-desc">Chuyển đơn offline → TA order. Hoặc tạo sample order $50-200 cho buyer tiềm năng. 1 đơn = mở khóa Sales dimension + bonus star. Khuyến khích buyer để review sau nhận hàng.</div>
+</div>
+</div>
+
+<div class="rec-item priority-med">
+<div class="rec-icon">&#128202;</div>
+<div>
+<div class="rec-title">Nâng PIS Score cho 200 sản phẩm chủ lực <span class="rec-badge p1">P1 Tuần 2-3</span></div>
+<div class="rec-desc">Tập trung nâng 200 sản phẩm lên PIS达标. Checklist: title đủ keywords, 6+ ảnh chất lượng, description đầy đủ, attributes complete, video sản phẩm.</div>
+</div>
+</div>
+
+<div class="rec-item priority-low">
+<div class="rec-icon">&#127919;</div>
+<div>
+<div class="rec-title">Tạo sản phẩm Super/Top <span class="rec-badge p2">P2 Tuần 3-4</span></div>
+<div class="rec-desc">Chọn 10-20 sản phẩm best-seller tiềm năng, tối ưu toàn diện để đạt Super/Top status. Đây sẽ là "anchor products" kéo traffic cho toàn gian hàng.</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<!-- ============ CHINESE TAB ============ -->
+<div id="tab-zh" class="tab-content">
+<div class="zh">
+
+<!-- 总览 -->
+<div class="card">
+<h2>店铺总览 — 2026年7月</h2>
+<p class="zh">Chung Long（仲龙）已在Alibaba运营<strong>超过2年</strong>（自2025年3月起），专业生产塑料卫浴配件（Bidet、Shower Head、Tank Fittings、Flush Valve等）。店铺正在享受<strong>Star-rating Boost</strong>平台扶持，但流量仍远低于行业平均水平。</p>
+
+<div class="metrics-grid" style="margin-top:16px">
+<div class="metric-card danger">
+<div class="value">9,131</div>
+<div class="label">搜索曝光 (7月)</div>
+<div class="change down">仅达行业均值34.8% (26,218)</div>
+</div>
+<div class="metric-card danger">
+<div class="value">156</div>
+<div class="label">UV / 访客 (30天)</div>
+<div class="change down">仅达行业均值12% (1,302)</div>
+</div>
+<div class="metric-card positive">
+<div class="value">880</div>
+<div class="label">总产品数</div>
+<div class="change up">+19新品 / +222更新 7月</div>
+</div>
+<div class="metric-card positive">
+<div class="value">100%</div>
+<div class="label">及时回复率</div>
+<div class="change up">优于行业 (92.67%)</div>
+</div>
+</div>
+</div>
+
+<!-- 核心问题 -->
+<div class="card">
+<h2>核心问题 — 需要立即改善</h2>
+
+<div class="bottleneck-box">
+<h3 style="color:#c5221f">1. 流量极低 — 仅行业~35%</h3>
+<div class="bottleneck-meter">
+<div class="meter-label">搜索曝光</div>
+<div class="meter-bar"><div class="meter-fill" style="width:35%;background:#ea4335"></div></div>
+<div class="meter-value" style="color:#ea4335">9,131 / 26,218 (行业均值) — 仅34.8%</div>
+</div>
+<div class="bottleneck-meter">
+<div class="meter-label">UV (30天)</div>
+<div class="meter-bar"><div class="meter-fill" style="width:12%;background:#ea4335"></div></div>
+<div class="meter-value" style="color:#ea4335">156 / 1,302 (行业均值) — 仅12%</div>
+</div>
+<p style="font-size:13px;margin-top:8px"><strong>分析：</strong>流量连续3个月徘徊在9-10K，无增长。UV仅~150/月 — 太低无法产生inquiries。主要原因：<strong>未使用KWA</strong> + <strong>关键词未优化</strong>。</p>
+</div>
+
+<div class="kwa-alert">
+<div class="label">KWA余额 — 完全未使用！</div>
+<div class="amount">VND 35,400,000</div>
+<div class="label">广告预算闲置 — 需要立即激活以增加流量</div>
+</div>
+
+<div class="bottleneck-box warning-box">
+<h3 style="color:#e37400">2. 新品发布与更新不足</h3>
+<p>7月：仅<strong>19个新品</strong>和<strong>222个更新</strong>。相比880个产品，更新率偏低。Alibaba算法偏好频繁发布新品和更新的店铺。</p>
+<p style="font-size:13px;margin-top:8px"><strong>建议：</strong>每周发布30-50个新品，更新100+产品（修改title、keywords、图片）。</p>
+</div>
+
+<div class="bottleneck-box warning-box">
+<h3 style="color:#e37400">3. RFQ = 51/51 — 已充分利用，需优化质量</h3>
+<p>7月：<strong>51/51 RFQ报价</strong> — 已使用100% quota。这是亮点！但需要评估报价质量：RFQ → inquiry → order的转化率如何？</p>
+<p style="font-size:13px;margin-top:8px"><strong>建议：</strong>(1) 审查51个已回复RFQ — follow-up未成交buyers。(2) 按质量分类RFQ (A/B/C)。(3) 8月目标：维持51/51 + 提升转化率至15-20%。</p>
+</div>
+
+<div class="bottleneck-box">
+<h3 style="color:#c5221f">4. Top产品太少 — 仅5/880</h3>
+<p>仅<strong>5个Top产品</strong>和<strong>0个Super产品</strong>，占880产品的0.6%。意味着99.4%的产品未达到Alibaba listing质量标准。</p>
+<p style="font-size:13px;margin-top:8px"><strong>建议：</strong>优化所有产品PIS分数。集中提升50-100个主力产品至Top/Super。</p>
+</div>
+
+<div class="bottleneck-box">
+<h3 style="color:#c5221f">5. 关键词未更新</h3>
+<p>现有产品使用基础关键词，未跟上搜索趋势。例如：bidet产品只用"bidet sprayer"，而buyers正在搜索"shattaf"、"handheld bidet"、"toilet sprayer"等。</p>
+<p style="font-size:13px;margin-top:8px"><strong>建议：</strong>参考下方"关键词建议"部分更新各产品线关键词。</p>
+</div>
+</div>
+
+<!-- 关键词建议 -->
+<div class="card">
+<h2>各产品线关键词建议</h2>
+<p class="zh">基于Alibaba搜索趋势和Top Ranking竞争对手分析：</p>
+
+<h3 class="section-title">1. Bidet / Shattaf（主力产品）</h3>
+<div class="kw-section">
+<strong style="font-size:12px;color:#c5221f">热门关键词 — 高搜索量：</strong><br>
+<span class="keyword-tag hot">bidet sprayer</span>
+<span class="keyword-tag hot">shattaf</span>
+<span class="keyword-tag hot">handheld bidet</span>
+<span class="keyword-tag hot">toilet sprayer</span>
+<span class="keyword-tag hot">bidet spray set</span>
+<span class="keyword-tag hot">hand bidet sprayer</span>
+<span class="keyword-tag hot">bum gun</span>
+</div>
+<div class="kw-section">
+<strong style="font-size:12px;color:#137333">利基关键词 — 低竞争：</strong><br>
+<span class="keyword-tag current">bidet sprayer for toilet</span>
+<span class="keyword-tag current">muslim shower</span>
+<span class="keyword-tag current">health faucet</span>
+<span class="keyword-tag current">shattaf set</span>
+<span class="keyword-tag current">bidet attachment handheld</span>
+<span class="keyword-tag current">portable bidet sprayer</span>
+<span class="keyword-tag current">self-cleaning bidet nozzle</span>
+</div>
+<div class="kw-section">
+<strong style="font-size:12px;color:#856404">长尾关键词 — 高转化：</strong><br>
+<span class="keyword-tag recommended">ABS plastic bidet sprayer wholesale</span>
+<span class="keyword-tag recommended">chrome shattaf manufacturer Vietnam</span>
+<span class="keyword-tag recommended">OEM bidet sprayer factory</span>
+<span class="keyword-tag recommended">wall mounted bidet spray set bulk</span>
+<span class="keyword-tag recommended">eco-friendly handheld bidet supplier</span>
+</div>
+
+<h3 class="section-title">2. Shower Head</h3>
+<div class="kw-section">
+<strong style="font-size:12px;color:#c5221f">热门关键词：</strong><br>
+<span class="keyword-tag hot">shower head</span>
+<span class="keyword-tag hot">hand shower</span>
+<span class="keyword-tag hot">rainfall shower head</span>
+<span class="keyword-tag hot">high pressure shower head</span>
+<span class="keyword-tag hot">bathroom shower</span>
+<span class="keyword-tag hot">ABS shower head</span>
+</div>
+<div class="kw-section">
+<strong style="font-size:12px;color:#137333">利基关键词：</strong><br>
+<span class="keyword-tag current">water saving shower head</span>
+<span class="keyword-tag current">chrome hand shower</span>
+<span class="keyword-tag current">single function shower head</span>
+<span class="keyword-tag current">modern bathroom shower</span>
+<span class="keyword-tag recommended">OEM shower head manufacturer Vietnam</span>
+<span class="keyword-tag recommended">plastic shower head factory price</span>
+</div>
+
+<h3 class="section-title">3. Tank Fittings / Flush Valve</h3>
+<div class="kw-section">
+<strong style="font-size:12px;color:#c5221f">热门关键词：</strong><br>
+<span class="keyword-tag hot">toilet tank fittings</span>
+<span class="keyword-tag hot">flush valve</span>
+<span class="keyword-tag hot">toilet flush button</span>
+<span class="keyword-tag hot">dual flush valve</span>
+<span class="keyword-tag hot">toilet cistern fittings</span>
+<span class="keyword-tag hot">inlet valve toilet</span>
+</div>
+<div class="kw-section">
+<strong style="font-size:12px;color:#137333">利基关键词：</strong><br>
+<span class="keyword-tag current">water saving flush valve</span>
+<span class="keyword-tag current">3/6L dual flush</span>
+<span class="keyword-tag current">toilet tank repair kit</span>
+<span class="keyword-tag current">universal flush valve</span>
+<span class="keyword-tag recommended">OEM toilet tank fittings factory</span>
+<span class="keyword-tag recommended">plastic flush valve manufacturer</span>
+</div>
+
+<h3 class="section-title">4. Toilet Accessories (P Trap, Toilet Seat...)</h3>
+<div class="kw-section">
+<strong style="font-size:12px;color:#c5221f">热门关键词：</strong><br>
+<span class="keyword-tag hot">P trap</span>
+<span class="keyword-tag hot">toilet seat</span>
+<span class="keyword-tag hot">bathroom drain</span>
+<span class="keyword-tag hot">slow close toilet seat</span>
+<span class="keyword-tag hot">PVC pipe fittings</span>
+</div>
+<div class="kw-section">
+<strong style="font-size:12px;color:#137333">利基关键词：</strong><br>
+<span class="keyword-tag current">bottle trap bathroom</span>
+<span class="keyword-tag current">elongated toilet seat</span>
+<span class="keyword-tag current">soft close toilet seat cover</span>
+<span class="keyword-tag current">lavabo drain connector</span>
+<span class="keyword-tag recommended">OEM bathroom accessories Vietnam</span>
+<span class="keyword-tag recommended">plastic sanitary ware factory</span>
+</div>
+</div>
+
+<!-- Top Ranking分析 -->
+<div class="card">
+<h2>Top Ranking分析 — 参考案例</h2>
+<p class="zh">分析Bidet行业Top Ranking产品，为Chung Long提供优化参考：</p>
+
+<div class="top-ranking-box">
+<h3>Top Ranking产品：2-Function Chrome ABS Shattaf</h3>
+<p style="font-size:13px;margin-bottom:12px"><strong>链接：</strong><a href="https://www.alibaba.com/product-detail/2-Function-Chrome-ABS-Shattaf-Single_10000029583603.html" target="_blank" style="color:#1a5276">在Alibaba查看产品</a></p>
+
+<div class="product-info">
+<div><span class="label">标题：</span><span class="value">2-Function Chrome ABS Shattaf - Single Hole Bidet Sprayer with Gray Face</span></div>
+<div><span class="label">价格：</span><span class="value">$2.19 - $2.29/piece</span></div>
+<div><span class="label">MOQ：</span><span class="value">200 pieces</span></div>
+<div><span class="label">材质：</span><span class="value">ABS Plastic</span></div>
+<div><span class="label">安装方式：</span><span class="value">Wall-mounted</span></div>
+<div><span class="label">产地：</span><span class="value">Vietnam</span></div>
+<div><span class="label">保修：</span><span class="value">1 Year</span></div>
+<div><span class="label">特点：</span><span class="value">Eco-Friendly, Nozzle Self-cleaning, Easy Installation</span></div>
+</div>
+
+<h3 style="margin-top:16px">与Chung Long同类产品对比：</h3>
+<table class="comparison-table">
+<thead>
+<tr><th>对比项</th><th>Top Ranking</th><th>Chung Long（同类）</th><th>备注</th></tr>
+</thead>
+<tbody>
+<tr><td>标题</td><td>简洁，含key features + material + color</td><td>过长，过多描述性形容词</td><td style="color:#ea4335">需缩短，聚焦关键词</td></tr>
+<tr><td>价格</td><td>$2.19-2.29（清晰）</td><td>$1.15 - $3.92/pc（已转为USD）</td><td style="color:#34a853">有竞争力，已显示USD</td></tr>
+<tr><td>MOQ</td><td>200 pcs（适中）</td><td>10-200 pcs</td><td style="color:#34a853">低MOQ是优势</td></tr>
+<tr><td>关键词</td><td>Shattaf, Bidet Sprayer, Chrome ABS</td><td>Bidet, Handheld, Sprayer</td><td style="color:#ea4335">缺少"shattaf", "bum gun"</td></tr>
+<tr><td>图片</td><td>多角度 + 场景图</td><td>产品图</td><td style="color:#f9ab00">需补充场景使用图</td></tr>
+<tr><td>卖点</td><td>3个核心卖点清晰</td><td>功能多但分散</td><td style="color:#f9ab00">聚焦3-5个核心USP</td></tr>
+</tbody>
+</table>
+
+<h3 style="margin-top:16px">从Top Ranking学到的经验：</h3>
+<div class="fix-box">
+<strong>1. 标题优化：</strong>"[功能数] + [材质] + [产品名] + [核心特点] + [颜色/风格]"
+<br>示例："2-Function Chrome ABS Shattaf - Single Hole Bidet Sprayer with Gray Face"
+<br><strong>→ Chung Long应采用：</strong>"ABS Chrome Bidet Sprayer Set - Wall Mounted Handheld Shattaf with Self-Cleaning Nozzle"
+</div>
+<div class="fix-box">
+<strong class="zh">2. 价格USD有竞争力：</strong>Chung Long已显示USD价格（$1.15-$3.92/pc）— 比Top Ranking（$2.19-2.29）更有竞争力。这是需要在title和description中强调的优势。
+</div>
+<div class="fix-box">
+<strong>3. 3个核心卖点：</strong>不要罗列10+功能，只突出3个最强USP：Eco-Friendly, Self-cleaning, Easy Installation。
+</div>
+<div class="fix-box">
+<strong>4. 图片优化：</strong>Top Ranking使用多角度图片 + 场景图（实际浴室环境）。Chung Long需补充使用场景图片。
+</div>
+</div>
+</div>
+
+<!-- 星级评定 -->
+<div class="card">
+<h2>星级评定 — 利用Boost提升星级</h2>
+
+<div class="star-section">
+<div class="star-card">
+<h4>产品维度 (PIS)</h4>
+<p>当前：<strong>556个产品</strong></p>
+<div class="star-bar"><div class="fill orange" style="width:55.6%"></div></div>
+<p style="font-size:12px;color:#f9ab00;font-weight:600">需700达下一级 | 还差144</p>
+</div>
+<div class="star-card">
+<h4>营销维度 (UV/30天)</h4>
+<p>当前：<strong>139 UV</strong></p>
+<div class="star-bar"><div class="fill orange" style="width:69.5%"></div></div>
+<p style="font-size:12px">需200达下一级 | <span style="color:#f9ab00;font-weight:700">还差61 UV</span></p>
+</div>
+<div class="star-card">
+<h4>服务维度 (回复买家)</h4>
+<p>当前：<strong>8个买家/30天</strong></p>
+<div class="star-bar"><div class="fill orange" style="width:80%"></div></div>
+<p style="font-size:12px">需10达下一级 | <span style="color:#f9ab00;font-weight:700">还差2个买家</span></p>
+</div>
+<div class="star-card">
+<h4>销售维度 (GMV/90天)</h4>
+<p>当前：<strong>0 USD</strong></p>
+<div class="star-bar"><div class="fill red" style="width:0%"></div></div>
+<p style="font-size:12px">需$1,500达level 3 | 需要首笔TA订单</p>
+</div>
+</div>
+
+<div style="background:#d4e6f1;padding:16px;border-radius:10px;margin-top:16px">
+<strong class="zh">Chung Long升星策略：</strong>
+<ul style="margin:8px 0 0 20px;font-size:14px">
+<li><strong class="zh">产品：</strong>需增加144个PIS达标产品 → 达700。优先优化现有200个产品的PIS。</li>
+<li><strong class="zh">营销：</strong>开启KWA → 139 UV → 200 UV只需额外~61 UV。以35tr预算轻松达成！</li>
+<li><strong class="zh">服务：</strong>只需再增加2个买家 → 达10。回复所有inquiries + chat + RFQ。</li>
+<li><strong class="zh">销售：</strong>创建1-2个TA sample orders激活GMV + bonus star。</li>
+</ul>
+</div>
+</div>
+
+<!-- 产品分析 -->
+<div class="card">
+<h2>Top产品分析 — 前10名产品</h2>
+<table class="data-table">
+<thead>
+<tr><th>#</th><th>产品</th><th>曝光</th><th>点击</th><th>询盘</th><th>消息</th></tr>
+</thead>
+<tbody>
+<tr><td>1</td><td style="text-align:left;font-size:11px">Rainfall Hand Shower Chrome High Pressure</td><td>155</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>2</td><td style="text-align:left;font-size:11px">Eco-Friendly Shattaf Travel Portable ABS Bidet</td><td>142</td><td>2</td><td>0</td><td>0</td></tr>
+<tr><td>3</td><td style="text-align:left;font-size:11px">Ergonomic Plastic Bidet Sprayer Self-Cleaning</td><td>111</td><td>9</td><td>0</td><td>0</td></tr>
+<tr><td>4</td><td style="text-align:left;font-size:11px">ABS Shattaf Modern Design Spray Set Leak-Proof</td><td>81</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>5</td><td style="text-align:left;font-size:11px">OEM/ODM Plastic WC Seat Soft Slow Fall Down</td><td>77</td><td>1</td><td>0</td><td>0</td></tr>
+<tr><td>6</td><td style="text-align:left;font-size:11px">Factory Supply PVC P Trap Drain Connector</td><td>75</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>7</td><td style="text-align:left;font-size:11px">OEM Customized ABS Wall-Mounted Bidet Sprayer</td><td>73</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>8</td><td style="text-align:left;font-size:11px">OEM 2-Piece ABS Dual Flush Button 3/6L Tank Fittings</td><td>72</td><td>1</td><td>0</td><td>0</td></tr>
+<tr><td>9</td><td style="text-align:left;font-size:11px">SCS221PW3201 Elongated Closed Front Bidet Seat</td><td>70</td><td>2</td><td>0</td><td>0</td></tr>
+<tr><td>10</td><td style="text-align:left;font-size:11px">ABS Shattaf Wall-Mounted Leak-Proof Bidet Spray</td><td>70</td><td>3</td><td>0</td><td>0</td></tr>
+</tbody>
+</table>
+
+<div class="issue-box">
+<strong class="zh">分析：</strong>前10产品总曝光仅827，点击18，询盘0。<strong>平均CTR仅2.2%</strong> — 非常低。原因：标题不够吸引人、图片不够吸引、价格不具竞争力或显示不清晰。
+</div>
+</div>
+
+<!-- 亮点 -->
+<div class="card">
+<h2>店铺亮点 — 竞争优势</h2>
+<div class="bright-grid">
+<div class="bright-item">
+<div class="check">&#10003;</div>
+<div class="title">直接制造商</div>
+<div class="detail">同奈省工厂，2007年注册。从原料到成品全程质量控制。</div>
+</div>
+<div class="bright-item">
+<div class="check">&#10003;</div>
+<div class="title">产品多样化</div>
+<div class="detail">880个产品，7个类别：Bidet、Shower Head、Tank Fittings、Flush Valve、Toilet Seat、P Trap、Desiccants。</div>
+</div>
+<div class="bright-item">
+<div class="check">&#10003;</div>
+<div class="title">橱窗100%使用</div>
+<div class="detail">20/20 showcase全部利用。</div>
+</div>
+<div class="bright-item">
+<div class="check">&#10003;</div>
+<div class="title">回复率100%</div>
+<div class="detail">及时回复率100%，回复时间0.5h — 快于行业 (3.5h)。</div>
+</div>
+<div class="bright-item">
+<div class="check">&#10003;</div>
+<div class="title">RTS 423个产品</div>
+<div class="detail">423个RTS产品，341有曝光，23有点击。 ready for fast orders。</div>
+</div>
+<div class="bright-item">
+<div class="check">&#10003;</div>
+<div class="title">KWA 3540万已充值</div>
+<div class="detail">广告预算已就绪。只需激活即可获取流量。</div>
+</div>
+<div class="bright-item">
+<div class="check">&#10003;</div>
+<div class="title">Star-rating Boost</div>
+<div class="detail">正在享受平台boost扶持 — 需在boost结束前打好基础。</div>
+</div>
+<div class="bright-item">
+<div class="check">&#10003;</div>
+<div class="title">0重复产品</div>
+<div class="detail">店铺干净，无duplicate listings违规。</div>
+</div>
+<div class="bright-item">
+<div class="check">&#10003;</div>
+<div class="title">RFQ 51/51 — 100%</div>
+<div class="detail">已充分利用RFQ quota。需优化报价质量和follow-up以提升转化率。</div>
+</div>
+</div>
+</div>
+
+<!-- 行业数据 -->
+<div class="card">
+<h2>行业数据 — 卫浴配件</h2>
+
+<div class="industry-grid">
+<div class="industry-card">
+<h4 class="zh">2026搜索趋势</h4>
+<p style="font-size:13px"><strong class="zh">Bidet/Shattaf：</strong>中东、东南亚市场增长强劲。"shattaf"、"bum gun"、"health faucet"关键词热门。</p>
+<p style="font-size:13px;margin-top:6px"><strong class="zh">Shower Head：</strong>节水、高压、环保趋势。ABS塑料替代金属。</p>
+<p style="font-size:13px;margin-top:6px"><strong class="zh">Tank Fittings：</strong>双冲水、节水3/6L成新标准。OEM/ODM需求高。</p>
+</div>
+<div class="industry-card">
+<h4 class="zh">Alibaba参考价格</h4>
+<p style="font-size:13px"><strong class="zh">Bidet Sprayer：</strong>$1.50 - $5.00/pc (批发)</p>
+<p style="font-size:13px"><strong class="zh">Shower Head：</strong>$2.00 - $8.00/pc</p>
+<p style="font-size:13px"><strong class="zh">Tank Fittings：</strong>$0.50 - $3.00/set</p>
+<p style="font-size:13px"><strong class="zh">Toilet Seat：</strong>$5.00 - $25.00/pc</p>
+<p style="font-size:12px;color:#666;margin-top:6px">越南产地通常比中国价格低10-15%。</p>
+</div>
+<div class="industry-card">
+<h4 class="zh">竞争对手MOQ参考</h4>
+<p style="font-size:13px"><strong class="zh">头部供应商：</strong>MOQ 200-500 pcs (bidet/shower)</p>
+<p style="font-size:13px"><strong class="zh">平均水平：</strong>MOQ 100-300 pcs</p>
+<p style="font-size:13px"><strong class="zh">Chung Long：</strong>MOQ 10-200 pcs — <span style="color:#34a853;font-weight:600">低MOQ优势！</span></p>
+</div>
+</div>
+
+<h3 class="section-title">Top Ranking供应商 — 卫浴配件行业</h3>
+<table class="data-table">
+<thead>
+<tr><th>供应商</th><th>主要产品</th><th>MOQ</th><th>产地</th><th>优势</th></tr>
+</thead>
+<tbody>
+<tr><td>Ningbo Hi-Tech Leelongs</td><td>Shattaf, Bidet Sets</td><td>100 pcs</td><td>中国</td><td>多样款式，价格低</td></tr>
+<tr><td>China Sanyin</td><td>Bathroom Accessories</td><td>200 pcs</td><td>中国</td><td>全系列，OEM强</td></tr>
+<tr><td>Dongguan Aquamate</td><td>Shower Heads</td><td>500 pcs</td><td>中国</td><td>专业shower，高品质</td></tr>
+<tr style="background:#e6f4ea;font-weight:600"><td>Chung Long Plastic</td><td>Bidet, Shower, Tank Fittings</td><td>10 pcs</td><td>越南</td><td>低MOQ，工厂直供，多原料</td></tr>
+</tbody>
+</table>
+</div>
+
+<!-- 30天行动计划 -->
+<div class="card">
+<h2>30天行动计划</h2>
+
+<div class="rec-item priority-high">
+<div class="rec-icon">&#128200;</div>
+<div>
+<div class="rec-title">激活KWA — 立即竞价20+关键词 <span class="rec-badge p0">P0 第1周</span></div>
+<div class="rec-desc">VND 35,400,000闲置中！立即竞价：bidet sprayer, shattaf, shower head, toilet tank fittings, flush valve, P trap, toilet seat... 目标：UV从156 → 300+，2周内达成。这是第一优先行动。</div>
+</div>
+</div>
+
+<div class="rec-item priority-high">
+<div class="rec-icon">&#128221;</div>
+<div>
+<div class="rec-title">更新所有产品关键词 <span class="rec-badge p0">P0 第1-2周</span></div>
+<div class="rec-desc">应用上方关键词建议到各产品线。优先处理50个top产品。添加关键词：shattaf, bum gun, health faucet, water saving, OEM Vietnam...</div>
+</div>
+</div>
+
+<div class="rec-item priority-high">
+<div class="rec-icon">&#128247;</div>
+<div>
+<div class="rec-title">优化Top 10产品标题与图片 <span class="rec-badge p0">P0 第1周</span></div>
+<div class="rec-desc">应用Top Ranking标题公式："[功能] + [材质] + [产品] + [核心特点]"。添加场景图、多角度图。显示USD价格而非MXN。</div>
+</div>
+</div>
+
+<div class="rec-item priority-high">
+<div class="rec-icon">&#128230;</div>
+<div>
+<div class="rec-title">每周发布30-50个新品 <span class="rec-badge p0">P0 持续</span></div>
+<div class="rec-desc">目标：4周内达700+ PIS达标产品。创建变体：不同weight (1kg/2.5kg/5kg)、不同color、不同packaging。每个变体 = 1个新listing配独立关键词。</div>
+</div>
+</div>
+
+<div class="rec-item priority-high">
+<div class="rec-icon">&#128172;</div>
+<div>
+<div class="rec-title">优化RFQ 51/51 — Follow-up & 转化 <span class="rec-badge p0">P0 第1周</span></div>
+<div class="rec-desc">已使用100% RFQ quota — 非常好！现在需要优化质量：(1) 审查51个已回复RFQ，follow-up未成交buyers。(2) 按质量分类A/B/C。(3) 8月目标：维持51/51 + 提升转化率15-20%。这是最高质量inquiries渠道。</div>
+</div>
+</div>
+
+<div class="rec-item priority-med">
+<div class="rec-icon">&#11088;</div>
+<div>
+<div class="rec-title">创建首笔TA订单 — 激活Sales维度 <span class="rec-badge p1">P1 第2-4周</span></div>
+<div class="rec-desc">将线下订单转TA。或为潜在买家创建$50-200 sample order。1笔订单 = 解锁Sales维度 + bonus star。鼓励买家收货后留评。</div>
+</div>
+</div>
+
+<div class="rec-item priority-med">
+<div class="rec-icon">&#128202;</div>
+<div>
+<div class="rec-title">提升200个主力产品PIS分数 <span class="rec-badge p1">P1 第2-3周</span></div>
+<div class="rec-desc">集中提升200个产品至PIS达标。检查清单：title含关键词、6+张高质量图片、完整description、attributes完整、产品视频。</div>
+</div>
+</div>
+
+<div class="rec-item priority-low">
+<div class="rec-icon">&#127919;</div>
+<div>
+<div class="rec-title">打造Super/Top产品 <span class="rec-badge p2">P2 第3-4周</span></div>
+<div class="rec-desc">选择10-20个best-seller潜力产品，全面优化至Super/Top状态。这些将成为拉动全店流量的"anchor products"。</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="footer">
+CONG TY TNHH NHUA CONG NGHIEP CHUNG LONG VIET NAM | Báo cáo tạo ngày 10/08/2026 | Account Manager: Nguyễn Lê Thanh Phương<br>
+仲龙塑料工业有限公司 | 报告生成日期: 2026/08/10 | 客户经理: Nguyễn Lê Thanh Phương
+</div>
+</div>
+
+<script>
+// Tab switching
+function switchTab(lang) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + lang).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
+</body>
+</html>
