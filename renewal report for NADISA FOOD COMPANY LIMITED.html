@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Renewal Report - NADISA FOOD COMPANY LIMITED</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<style>
+:root{--primary:#FF6A00;--primary-d:#E25600;--primary-light:#FFF3E8;--success:#10B981;--success-light:#ECFDF5;--warning:#F59E0B;--warning-light:#FFFBEB;--danger:#EF4444;--danger-light:#FEF2F2;--info:#3B82F6;--info-light:#EFF6FF;--purple:#7C3AED;--purple-light:#F5F3FF;--gray-50:#F9FAFB;--gray-100:#F3F4F6;--gray-200:#E5E7EB;--gray-300:#D1D5DB;--gray-400:#9CA3AF;--gray-500:#6B7280;--gray-600:#4B5563;--gray-700:#374151;--gray-800:#1F2937;--gray-900:#111827;--radius:12px;--shadow:0 4px 24px rgba(0,0,0,0.08);}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--gray-50);color:var(--gray-800);line-height:1.6;overflow-x:hidden;overflow-wrap:break-word;word-break:break-word;}
+.side-nav{position:fixed;left:0;top:0;width:220px;height:100vh;background:#fff;border-right:1px solid var(--gray-200);padding:24px 16px;z-index:100;overflow-y:auto;}
+.side-nav h3{font-size:13px;color:var(--gray-400);text-transform:uppercase;letter-spacing:1px;margin-bottom:16px;}
+.side-nav a{display:block;padding:10px 12px;margin-bottom:4px;border-radius:8px;color:var(--gray-600);text-decoration:none;font-size:14px;transition:all .2s;}
+.side-nav a:hover,.side-nav a.active{background:var(--primary-light);color:var(--primary);font-weight:600;}
+.main{margin-left:220px;padding:0;}
+.hero{background:linear-gradient(135deg,#FF6A00,#FF8C38);color:#fff;padding:48px 40px 36px;}
+.hero h1{font-size:28px;font-weight:700;margin-bottom:4px;}
+.hero .subtitle{font-size:13px;letter-spacing:2px;opacity:.85;margin-bottom:20px;}
+.hero-meta{display:flex;gap:24px;flex-wrap:wrap;font-size:14px;opacity:.9;margin-bottom:16px;}
+.hero-meta span{background:rgba(255,255,255,.15);padding:4px 12px;border-radius:20px;}
+.hero-sales{display:flex;gap:20px;flex-wrap:wrap;font-size:14px;margin-bottom:16px;}
+.hero-sales .item{background:rgba(255,255,255,.12);padding:6px 14px;border-radius:8px;}
+.hero-sales .label{opacity:.75;font-size:12px;}
+.hero-sales .value{font-weight:600;}
+.badge-active{display:inline-block;background:var(--success);color:#fff;padding:6px 16px;border-radius:20px;font-size:13px;font-weight:600;}
+.war-card{background:linear-gradient(135deg,#1A1D24,#2D3341);border-radius:var(--radius);padding:32px;margin:24px 32px;color:#fff;}
+.war-tag{display:inline-block;background:var(--primary);color:#fff;padding:4px 12px;border-radius:6px;font-size:12px;font-weight:700;margin-bottom:16px;}
+.war-title{font-size:18px;font-weight:700;margin-bottom:8px;}
+.war-desc{color:var(--gray-300);font-size:14px;margin-bottom:20px;}
+.war-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px;}
+.war-kpi{background:rgba(255,255,255,.06);border-radius:10px;padding:16px;text-align:center;}
+.war-kpi .num{font-size:24px;font-weight:700;color:var(--primary);}
+.war-kpi .lbl{font-size:12px;color:var(--gray-400);margin-top:4px;}
+.war-section{margin-bottom:16px;}
+.war-section h4{font-size:13px;color:var(--primary);margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px;}
+.war-section p,.war-section li{font-size:14px;color:var(--gray-200);line-height:1.7;}
+.war-section ul{list-style:none;padding:0;}
+.war-section li::before{content:'';display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--primary);margin-right:8px;vertical-align:middle;}
+.war-expand{background:var(--primary);color:#fff;border:none;padding:10px 24px;border-radius:8px;cursor:pointer;font-size:14px;font-weight:600;margin-top:12px;}
+.content-area{padding:24px 32px;}
+.acc{margin-bottom:16px;border:1px solid var(--gray-200);border-radius:var(--radius);background:#fff;overflow:hidden;}
+.acc summary{padding:18px 22px;font-size:16px;font-weight:600;cursor:pointer;list-style:none;display:flex;align-items:center;gap:10px;}
+.acc summary::before{content:'\25B8';color:var(--primary);font-size:18px;transition:transform .2s;}
+.acc[open] summary::before{transform:rotate(90deg);}
+.acc-body{padding:0 22px 22px;}
+.acc-body>:first-child{margin-top:0;}
+.metric-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:20px;}
+.metric-card{border-radius:10px;padding:16px;}
+.metric-card.good{background:var(--success-light);border-left:4px solid var(--success);}
+.metric-card.warn{background:var(--warning-light);border-left:4px solid var(--warning);}
+.metric-card.bad{background:var(--danger-light);border-left:4px solid var(--danger);}
+.metric-card.neutral{background:var(--gray-100);border-left:4px solid var(--gray-300);}
+.metric-card.prod{background:var(--purple-light);border-left:4px solid var(--purple);}
+.metric-card.info{background:var(--info-light);border-left:4px solid var(--info);}
+.metric-card .mc-label{font-size:12px;color:var(--gray-500);margin-bottom:4px;}
+.metric-card .mc-value{font-size:20px;font-weight:700;}
+.metric-card .mc-sub{font-size:11px;color:var(--gray-400);margin-top:2px;}
+.info-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;}
+.info-cell{background:var(--gray-50);border-radius:8px;padding:12px 14px;}
+.info-cell .ic-label{font-size:11px;color:var(--gray-400);margin-bottom:2px;}
+.info-cell .ic-value{font-size:14px;font-weight:600;color:var(--gray-800);}
+.conclusion-banner{border-radius:var(--radius);padding:20px 24px;margin-bottom:20px;}
+.conclusion-banner.good{background:var(--success-light);border:1px solid #A7F3D0;}
+.conclusion-banner.mixed{background:var(--info-light);border:1px solid #BFDBFE;}
+.conclusion-banner.warn{background:var(--danger-light);border:1px solid #FECACA;}
+.conclusion-banner h4{font-size:14px;margin-bottom:8px;}
+.conclusion-banner p{font-size:14px;color:var(--gray-700);line-height:1.7;}
+.conclusion-banner ul{margin:8px 0 0 20px;font-size:14px;color:var(--gray-700);line-height:1.8;}
+.strategy-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-bottom:20px;}
+.strategy-box{border-radius:var(--radius);padding:20px;}
+.strategy-box.confidence{background:var(--success-light);border:1px solid #A7F3D0;}
+.strategy-box.value{background:var(--info-light);border:1px solid #BFDBFE;}
+.strategy-box.urgency{background:var(--danger-light);border:1px solid #FECACA;}
+.strategy-box.action{background:var(--primary-light);border:1px solid #FDBA74;}
+.strategy-box h4{font-size:14px;font-weight:700;margin-bottom:8px;}
+.strategy-box p{font-size:13px;color:var(--gray-700);line-height:1.6;}
+.talk{background:#fff;border:1px solid var(--gray-200);border-left:4px solid var(--primary);border-radius:8px;padding:16px 20px;margin:16px 0;font-size:14px;color:var(--gray-700);line-height:1.7;font-style:italic;}
+.data-table{width:100%;border-collapse:collapse;font-size:13px;margin:16px 0;}
+.data-table th{background:var(--gray-100);padding:10px 12px;text-align:left;font-weight:600;color:var(--gray-600);border-bottom:2px solid var(--gray-200);}
+.data-table td{padding:10px 12px;border-bottom:1px solid var(--gray-100);}
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;}
+.tag-good{background:#D1FAE5;color:#065F46;}
+.tag-warn{background:#FEF3C7;color:#92400E;}
+.tag-bad{background:#FEE2E2;color:#991B1B;}
+.tag-info{background:#DBEAFE;color:#1E40AF;}
+.good-text{color:var(--success);font-weight:600;}
+.warn-text{color:var(--warning);font-weight:600;}
+.bad-text{color:var(--danger);font-weight:600;}
+.chart-container{position:relative;height:300px;margin:20px 0;}
+.tl{position:relative;padding-left:24px;margin:20px 0;}
+.tl::before{content:'';position:absolute;left:8px;top:0;bottom:0;width:2px;background:var(--gray-200);}
+.tl-item{position:relative;margin-bottom:16px;padding:12px 16px;background:var(--gray-50);border-radius:8px;}
+.tl-item::before{content:'';position:absolute;left:-20px;top:16px;width:10px;height:10px;border-radius:50%;background:var(--primary);border:2px solid #fff;}
+.tl-item .tl-date{font-size:12px;color:var(--gray-400);}
+.tl-item .tl-text{font-size:14px;font-weight:500;}
+.footer{text-align:center;padding:32px;font-size:12px;color:var(--gray-400);}
+.disclaimer{font-size:11px;color:var(--gray-400);margin-top:8px;line-height:1.5;}
+.star-table td,.star-table th{text-align:center;}
+.star-table .star-current{font-weight:700;color:var(--primary);}
+.star-table .star-gap{color:var(--danger);font-weight:600;}
+.plan-table td{vertical-align:top;}
+.plan-table .quarter{font-weight:700;color:var(--primary);white-space:nowrap;}
+.highlight-box{background:linear-gradient(135deg,#FFF7ED,#FFFBEB);border:1px solid #FDBA74;border-radius:var(--radius);padding:24px;margin:20px 0;}
+.highlight-box h4{color:var(--primary);font-size:15px;margin-bottom:12px;}
+.highlight-box ul{margin:8px 0 0 20px;font-size:14px;color:var(--gray-700);line-height:1.8;}
+.improve-box{background:linear-gradient(135deg,#FEF2F2,#FFF7ED);border:1px solid #FECACA;border-radius:var(--radius);padding:24px;margin:20px 0;}
+.improve-box h4{color:var(--danger);font-size:15px;margin-bottom:12px;}
+.improve-box ul{margin:8px 0 0 20px;font-size:14px;color:var(--gray-700);line-height:1.8;}
+.order-note{background:linear-gradient(135deg,#EFF6FF,#F0F9FF);border:1px solid #BFDBFE;border-radius:var(--radius);padding:24px;margin:20px 0;}
+.order-note h4{color:var(--info);font-size:15px;margin-bottom:12px;}
+.order-note p,.order-note li{font-size:14px;color:var(--gray-700);line-height:1.8;}
+.order-note ul{margin:8px 0 0 20px;}
+@media(max-width:900px){.side-nav{display:none;}.main{margin-left:0;}.metric-grid{grid-template-columns:repeat(2,1fr);}.info-grid{grid-template-columns:repeat(2,1fr);}.strategy-grid{grid-template-columns:1fr;}.war-kpis{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<nav class="side-nav">
+<h3>Mục lục</h3>
+<a href="#snapshot" class="active">Tổng quan giá trị gia hạn</a>
+<a href="#profile">1. Thông tin gian hàng</a>
+<a href="#highlights">Điểm sáng & Cải thiện</a>
+<a href="#pitch">2. Chiến lược tư vấn</a>
+<a href="#value">3. Giá trị đã mang lại</a>
+<a href="#diagnosis">4. Chẩn đoán gian hàng</a>
+<a href="#growth">5. Kế hoạch năm sau</a>
+</nav>
+<div class="main">
+
+<!-- HERO -->
+<div class="hero" id="snapshot">
+<h1>NADISA FOOD COMPANY LIMITED</h1>
+<div class="subtitle">BÁO CÁO GIA HẠN GGS - D CLASS (TẠM THỜI DOUBLE-LOW)</div>
+<div class="hero-meta">
+<span>Vietnam · Food & Beverage (Grain Products)</span>
+<span>1-Star · D Class</span>
+<span>1 Năm · Thành viên mới</span>
+</div>
+<div class="hero-sales">
+<div class="item"><div class="label">Kênh bán hàng</div><div class="value">GGS Direct Sales</div></div>
+<div class="item"><div class="label">Sales ký mới</div><div class="value">Trần Thiên Đức</div></div>
+<div class="item"><div class="label">Sales dịch vụ</div><div class="value">-</div></div>
+</div>
+<div class="badge-active">Hết hạn 2026-09-13 · Deadline T3: ~25 ngày</div>
+</div>
+
+<!-- WAR CARD -->
+<div class="war-card">
+<span class="war-tag">D CLASS - TẠM THỜI DOUBLE-LOW</span>
+<div class="war-title">D Class (Đơn hàng &lt; 1 và Cơ hội chất lượng &lt; 3) — Tập trung chuyển đổi</div>
+<div class="war-desc">NADISA đã xây dựng nền tảng sản phẩm vững chắc với 979 sản phẩm, bao gồm 585 sản phẩm đạt 5.5+. Tuy nhiên, đơn hàng chưa chuyển thành công. Lưu lượng đang tăng (91 UV/30 ngày) nhưng chưa đạt ngưỡng 1 sao Marketing (100 UV). Gian hàng nhận 11 inquiries trong 30 ngày với 7 từ professional buyers (L2+), cho thấy sự quan tâm thực sự từ người mua. Khoảng cách chính: chuyển đổi inquiries thành đơn hàng Trade Assurance. Lưu ý: 2 đơn hàng được đặt trong tháng 7 nhưng giao hàng chưa thành công — đây là vấn đề vận hành có thể sửa, không phải vấn đề nhu cầu.</div>
+<div class="war-kpis">
+<div class="war-kpi"><div class="num">979</div><div class="lbl">Sản phẩm (585 đạt 5.5+)</div></div>
+<div class="war-kpi"><div class="num">11</div><div class="lbl">Inquiries (30d) · 7 L2+ Buyers</div></div>
+<div class="war-kpi"><div class="num">$0</div><div class="lbl">GMV (180 ngày) · 2 đơn tháng 7 chưa hoàn thành</div></div>
+</div>
+<div class="war-section"><h4>Nguyên nhân gốc rễ</h4><p>Số lượng sản phẩm tốt (979) nhưng cần chuyển từ "số lượng đăng bán" sang "chất lượng + marketing có mục tiêu." Chưa đầu tư P4P/KWA (VND 0). Tháng 7 đã báo giá 40/40 RFQ — cho thấy nhân sự mới rất tích cực, nhưng cần lọc RFQ chất lượng cao hơn thay vì báo giá tràn lan. Tháng 7 có 2 đơn hàng buyer đặt nhưng giao hàng thất bại — chứng tỏ nhu cầu có thật nhưng xử lý đơn hàng cần cải thiện.</p></div>
+<div class="war-section"><h4>1 hành động cần làm ngay hôm nay</h4><p>Chọn top 30 sản phẩm, tối ưu PIS 4.5+, kích hoạt Smart Showcase, cân nhắc gói quảng cáo của Alibaba. Lọc lại 40 RFQ đã báo giá trong tháng 7: xác định buyer từ thị trường trọng điểm (EU, Mỹ), reconnect những buyer tiềm năng nhất. Với 2 đơn hàng tháng 7: liên hệ buyers, thảo luận điều khoản, hủy đơn cũ và tạo lại qua Trade Assurance.</p></div>
+<button class="war-expand" onclick="document.querySelectorAll('.acc').forEach(d=>d.open=true)">Mở rộng toàn bộ chi tiết</button>
+</div>
+
+<div class="content-area">
+
+<!-- MODULE 1: PROFILE -->
+<details class="acc" id="profile"><summary>1. Thông tin gian hàng</summary><div class="acc-body">
+<div class="info-grid">
+<div class="info-cell"><div class="ic-label">Tên công ty</div><div class="ic-value">NADISA FOOD COMPANY LIMITED</div></div>
+<div class="info-cell"><div class="ic-label">Member ID</div><div class="ic-value">vn19069539509nntn</div></div>
+<div class="info-cell"><div class="ic-label">Khu vực / Quốc gia</div><div class="ic-value">Asia South · Vietnam</div></div>
+<div class="info-cell"><div class="ic-label">Email liên hệ</div><div class="ic-value">nadisa@gmail.com</div></div>
+<div class="info-cell"><div class="ic-label">Ngành chính L1</div><div class="ic-value">Food &amp; Beverage</div></div>
+<div class="info-cell"><div class="ic-label">Ngành chính L2</div><div class="ic-value">Grain Products</div></div>
+<div class="info-cell"><div class="ic-label">Phân tầng</div><div class="ic-value">D Class</div></div>
+<div class="info-cell"><div class="ic-label">Xếp hạng sao</div><div class="ic-value">1-Star</div></div>
+<div class="info-cell"><div class="ic-label">Sản phẩm hội viên</div><div class="ic-value">pe017</div></div>
+<div class="info-cell"><div class="ic-label">Giai đoạn dịch vụ</div><div class="ic-value">1 Năm · Thành viên mới</div></div>
+<div class="info-cell"><div class="ic-label">Thời gian dịch vụ</div><div class="ic-value">2025-09-09 — 2026-09-13</div></div>
+<div class="info-cell"><div class="ic-label">Số ngày phục vụ</div><div class="ic-value">~365 ngày</div></div>
+<div class="info-cell"><div class="ic-label">Đếm ngược gia hạn</div><div class="ic-value" style="color:var(--warning)">~25 ngày đến hạn T3</div></div>
+<div class="info-cell"><div class="ic-label">Đăng nhập 30 ngày</div><div class="ic-value">1 ngày</div></div>
+<div class="info-cell"><div class="ic-label">Trade Assurance</div><div class="ic-value">Đã mở</div></div>
+<div class="info-cell"><div class="ic-label">Loại hình công ty</div><div class="ic-value">Nhà sản xuất</div></div>
+</div>
+
+<div class="talk">NADISA là nhà sản xuất thực phẩm tại Phú Thọ, Việt Nam, trên Alibaba.com được 1 năm. Gian hàng có 979 sản phẩm với điểm chất lượng cao (585 đạt 5.5+) nhưng chưa chuyển đổi inquiries thành đơn hàng hoàn thành. Tháng 7 có 2 đơn hàng buyer đặt nhưng giao hàng thất bại — nhu cầu có thật, khoảng cách nằm ở xử lý đơn hàng. Với nhân sự vận hành chuyên trách (từ tháng 7/2026) và 40/40 RFQ đã báo giá, năm 2 nên tập trung chuyển đổi sự quan tâm của buyer thành đơn hàng Trade Assurance.</div>
+</div></details>
+
+<!-- HIGHLIGHTS & IMPROVEMENTS -->
+<details class="acc" id="highlights" open><summary>Điểm sáng & Điểm cần cải thiện</summary><div class="acc-body">
+
+<div class="highlight-box">
+<h4>Điểm sáng gian hàng (Đặc biệt từ tháng 7/2026 khi có nhân sự vận hành chuyên trách)</h4>
+<ul>
+<li><strong>Chất lượng sản phẩm tốt:</strong> 979 sản phẩm hiệu lực, trong đó <strong>585 sản phẩm đạt PIS 5.5+</strong> (chiếm 59.7%), 978 sản phẩm 4.5+, 972 sản phẩm 5.0+. Đây là cơ sở sản phẩm rất mạnh so với các shop cùng ngành năm 1.</li>
+<li><strong>Tăng trưởng danh mục tích cực:</strong> Thêm <strong>97 sản phẩm mới</strong> trong 30 ngày gần nhất, cho thấy nhân viên vận hành mới đã làm việc tích cực.</li>
+<li><strong>Sản phẩm RTS đã có:</strong> <strong>95 sản phẩm RTS</strong> (Ready to Ship), giúp người mua nhỏ lẻ có thể đặt hàng nhanh.</li>
+<li><strong>Có người mua chuyên nghiệp:</strong> 11 AB trong 30 ngày, trong đó <strong>7 L2 buyers (professional)</strong> và <strong>1 L3 buyer (core)</strong>. Có 6 sản phẩm có AB trong tháng — chứng tỏ sản phẩm đang thu hút người mua thực sự.</li>
+<li><strong>Thời gian phản hồi nhanh:</strong> Thời gian reply trung bình <strong>1.3 giờ</strong> — tốt hơn nhiều so với ngưỡng 24h của sao. Điều này cho thấy nhân viên vận hành phản hồi nhanh chóng.</li>
+<li><strong>Showcase sử dụng 100%:</strong> 20/20 showcase slots đã sử dụng, 100% khớp ngành hàng chính. Đây là sử dụng tốt quyền lợi miễn phí.</li>
+<li><strong>Không vi phạm:</strong> Violation score = 0, không có vấn đề về tuân thủ.</li>
+<li><strong>Đã có 2 đơn hàng từ Buyer trong tháng 7:</strong> Mặc dù chưa giao thành công, nhưng việc có đơn hàng cho thấy người mua có nhu cầu thực sự với sản phẩm của NADISA.</li>
+<li><strong>RFQ báo giá 40/40 trong tháng 7:</strong> Nhân viên vận hành mới đã sử dụng <strong>toàn bộ 40 lượt báo giá RFQ</strong> trong tháng 7 — rất tích cực. Bước tiếp theo cần lọc RFQ theo thị trường tiềm năng (EU, Mỹ) và reconnect buyer L2+ để tối ưu tỷ lệ chuyển đổi.</li>
+</ul>
+</div>
+
+<div class="improve-box">
+<h4>Điểm cần cải thiện</h4>
+<ul>
+<li><strong>Chưa có đơn hàng hoàn thành:</strong> GMV 30d = $0, GMV 180d = $0. 2 đơn hàng tháng 7 chưa giao thành công. Đây là vấn đề lớn nhất cần giải quyết.</li>
+<li><strong>Lưu lượng còn thấp:</strong> 91 UV/30d — chưa đạt ngưỡng 100 cho 1 sao Marketing. Cần cân nhắc gói quảng cáo của Alibaba để tăng lưu lượng.</li>
+<li><strong>Chưa đầu tư quảng cáo:</strong> P4P/KWA spend = VND 0. Với 979 sản phẩm và 585 sản phẩm 5.5+, đây là lãng phí lớn. Sản phẩm chất lượng cao cần quảng cáo để tiếp cận người mua.</li>
+<li><strong>RFQ cần lọc chất lượng:</strong> Tháng 7 đã báo giá <strong>40/40 RFQ</strong> — rất tích cực! Tuy nhiên, cần lọc RFQ theo thị trường tiềm năng (EU, Mỹ) và buyer level (L2+) để tập trung reconnect những buyer có giá trị cao, thay vì báo giá tràn lan.</li>
+<li><strong>Task hoàn thành thấp:</strong> 4/15 tasks hoàn thành (26.7%). Nhiều task quan trọng như KWA, Smart Showcase, Self-Declaration chưa làm.</li>
+<li><strong>Đơn hàng tháng 7 thất bại:</strong> 2 đơn đặt hàng từ Buyer nhưng giao hàng không thành công. Cần cải thiện quy trình xử lý đơn hàng.</li>
+</ul>
+</div>
+
+<div class="order-note">
+<h4>Lưu ý về đơn hàng tháng 7 + Lời khuyên từ sàn</h4>
+<p><strong>Tình hình:</strong> Gian hàng NADISA có <strong>2 đơn đặt hàng từ Buyer trong tháng 7</strong>, tuy nhiên giao hàng chưa thành công.</p>
+<p style="margin-top:12px;"><strong>Lời khuyên từ sàn:</strong></p>
+<ul>
+<li>Sau khi nhận được đơn hàng từ khách, nếu cảm thấy đơn hàng chưa phù hợp với tiêu chí <strong>MOQ, giá, vận chuyển</strong> — vui lòng <strong>thảo luận với khách hàng trước</strong>.</li>
+<li>Sau khi thảo luận xong, <strong>hủy đơn hàng cũ và tạo lại đơn hàng mới</strong> với điều khoản phù hợp hơn.</li>
+<li><strong>Khuyến khích đi đơn thông qua Trade Assurance</strong> để nhận thêm traffic từ sàn (sao thưởng), lịch sử giao dịch. Ngoài ra, sàn cũng sẽ đảm bảo giao dịch hơn cho quý khách.</li>
+</ul>
+<p style="margin-top:12px;font-weight:600;color:var(--info);">Hành động đề nghị: Liên hệ 2 Buyer đã đặt hàng trong tháng 7, thảo luận về MOQ/giá/vận chuyển, hủy đơn cũ và tạo đơn mới qua Trade Assurance. Đây có thể là 2 đơn hàng đầu tiên của gian hàng!</p>
+</div>
+
+<div class="talk">Điểm sáng lớn nhất của NADISA là chất lượng sản phẩm: 585/979 sản phẩm đạt 5.5+ (59.7%) — tỷ lệ rất cao. Nhân viên vận hành mới (từ tháng 7/2026) đã thêm 97 sản phẩm mới trong 30 ngày, duy trì reply time 1.3h và báo giá 40/40 RFQ — rất tích cực. Vấn đề không phải là "không có người mua" (11 AB, 7 L2+, 2 đơn hàng tháng 7) mà là "chưa chuyển thành đơn hoàn thành". Bước tiếp theo: lọc RFQ theo thị trường trọng điểm, reconnect buyer tiềm năng và cân nhắc gói quảng cáo của Alibaba.</div>
+</div></details>
+
+<!-- MODULE 2: PITCH STRATEGY -->
+<details class="acc" id="pitch"><summary>2. Chiến lược tư vấn</summary><div class="acc-body">
+<div class="strategy-grid">
+<div class="strategy-box confidence"><h4>Xây dựng niềm tin</h4><p>NADISA đã xây dựng được nền tảng sản phẩm rất vững chắc: 979 sản phẩm, 585 đạt 5.5+, 95 sản phẩm RTS. Nhân viên vận hành mới đã thể hiện sự đầu tư nghiêm túc qua việc thêm 97 sản phẩm mới/tháng và duy trì reply time 1.3h. Quan trọng nhất: đã có 11 inquiries (7 từ professional buyers) và 2 đơn hàng trong tháng 7 — chứng tỏ nhu cầu có thật. Đây không phải là gian hàng "không ai mua" mà là gian hàng "cần hoàn thiện đơn hàng."</p></div>
+<div class="strategy-box value"><h4>Thể hiện giá trị</h4><p>Trong 11 tháng qua, nền tảng đã mang lại 91 UV/tháng, 11 inquiries (7 L2+ buyers, 1 L3 buyer), và tháng 7 đã báo giá 40/40 RFQ — cho thấy nhu cầu buyer đang tìm nhà cung cấp rất lớn. 20 Showcase slots đã được sử dụng 100%. Trade Assurance đã được mở. Người mua từ 6+ quốc gia (Vietnam, Đức, Mỹ, Thuỵ Điển, Israel, Nga) đã ghé thăm gian hàng.</p></div>
+<div class="strategy-box urgency"><h4>Tạo sự cấp bách</h4><p>Nếu không gia hạn: xếp hạng 1 sao sẽ về 0, toàn bộ 979 sản phẩm mất vị trí tìm kiếm, 11 inquiries/tháng và momentum RFQ tháng 7 sẽ chuyển sang đối thủ. 2 Buyer đã đặt hàng tháng 7 sẽ không thể liên hệ lại. Chi phí xây dựng lại từ đầu (thời gian + tiền bạc) lớn hơn nhiều so với duy trì hiện tại. Deadline T3 Renew: chỉ còn ~25 ngày.</p></div>
+<div class="strategy-box action"><h4>Thúc đẩy hành động</h4><p>Ký gia hạn và thực hiện kế hoạch 90 ngày: (1) Liên hệ 2 Buyer tháng 7, thảo luận và tạo đơn mới qua Trade Assurance, (2) Lọc lại 40 RFQ đã báo giá — reconnect buyer từ EU/Mỹ, (3) Cân nhắc gói gia hạn mới của Alibaba (bao gồm ngân sách quảng cáo + đảm bảo cơ hội kinh doanh), (4) Hoàn thành các task còn lại (Self-Declaration EU, Smart Showcase).</p></div>
+</div>
+
+<div class="talk">NADISA team, các bạn đã làm tốt bước đầu tiên — xây dựng danh mục 979 sản phẩm với 585 sản phẩm 5.5+. Nhân viên vận hành mới đã cho thấy sự tiến bộ rõ rệt. Bây giờ là lúc chuyển sang bước tiếp theo: biến inquiries và RFQ thành đơn hàng. 2 đơn hàng tháng 7 cho thấy người mua có nhu cầu thực sự — chỉ cần cải thiện cách xử lý đơn. Gia hạn ngay để giữ vị trí hiện tại và không phải bắt đầu lại từ con số 0.</div>
+</div></details>
+
+<!-- MODULE 3: VALUE DELIVERY -->
+<details class="acc" id="value"><summary>3. Giá trị đã mang lại</summary><div class="acc-body">
+
+<h4 style="margin-bottom:14px;color:var(--gray-600);">Chỉ số hiệu suất cốt lõi</h4>
+<div class="metric-grid">
+<div class="metric-card good"><div class="mc-label">Sản phẩm hiệu lực</div><div class="mc-value">979</div><div class="mc-sub">585 đạt 5.5+ (59.7%)</div></div>
+<div class="metric-card info"><div class="mc-label">UV (30d)</div><div class="mc-value">91</div><div class="mc-sub">Cần 100 cho 1 sao</div></div>
+<div class="metric-card warn"><div class="mc-label">Inquiries AB (30d)</div><div class="mc-value">11</div><div class="mc-sub">7 L2+ · 1 L3</div></div>
+<div class="metric-card bad"><div class="mc-label">Đơn hàng (30d)</div><div class="mc-value">0</div><div class="mc-sub">2 đơn tháng 7 chưa hoàn thành</div></div>
+<div class="metric-card bad"><div class="mc-label">GMV (180d)</div><div class="mc-value">$0</div><div class="mc-sub">Chưa có doanh thu</div></div>
+</div>
+
+<div class="metric-grid">
+<div class="metric-card prod"><div class="mc-label">Sản phẩm 4.5+</div><div class="mc-value">978</div><div class="mc-sub">99.9% sản phẩm đạt chuẩn</div></div>
+<div class="metric-card prod"><div class="mc-label">Sản phẩm 5.0+</div><div class="mc-value">972</div><div class="mc-sub">99.3% chất lượng cao</div></div>
+<div class="metric-card prod"><div class="mc-label">Sản phẩm RTS</div><div class="mc-value">95</div><div class="mc-sub">Sẵn sàng giao</div></div>
+<div class="metric-card warn"><div class="mc-label">Thời gian reply TB</div><div class="mc-value">1.3h</div><div class="mc-sub">Tốt (ngưỡng 24h)</div></div>
+<div class="metric-card bad"><div class="mc-label">KWA Spend (30d)</div><div class="mc-value">VND 0</div><div class="mc-sub">Chưa đầu tư quảng cáo</div></div>
+</div>
+
+<h4 style="margin:20px 0 12px;color:var(--gray-600);">Phân tích buyer theo quốc gia (7 ngày gần nhất)</h4>
+<table class="data-table">
+<thead><tr><th>#</th><th>Quốc gia</th><th>Buyer %</th><th>Đánh giá</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>Viet Nam</td><td>21.43%</td><td><span class="tag tag-good">Thị trường chính</span></td></tr>
+<tr><td>2</td><td>Germany</td><td>14.29%</td><td><span class="tag tag-info">Tiềm năng EU — cần Food Self-Declaration</span></td></tr>
+<tr><td>3</td><td>United States</td><td>14.29%</td><td><span class="tag tag-info">Thị trường giá trị cao</span></td></tr>
+<tr><td>4</td><td>Sweden</td><td>7.14%</td><td><span class="tag tag-info">EU — cần Self-Declaration</span></td></tr>
+<tr><td>5</td><td>Israel</td><td>7.14%</td><td><span class="tag tag-info">Thị trường ngách</span></td></tr>
+<tr><td>6</td><td>Russian Federation</td><td>7.14%</td><td><span class="tag tag-info">Thị trường ngách</span></td></tr>
+</tbody></table>
+
+<h4 style="margin:20px 0 12px;color:var(--gray-600);">Nguồn traffic (7 ngày gần nhất)</h4>
+<table class="data-table">
+<thead><tr><th>#</th><th>Nguồn</th><th>Buyer %</th><th>Ghi chú</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>Direct traffic</td><td>42.86%</td><td><span class="tag tag-warn">Phụ thuộc quá nhiều vào direct</span></td></tr>
+<tr><td>2</td><td>My storefront</td><td>19.05%</td><td><span class="tag tag-info">Bình thường</span></td></tr>
+<tr><td>3</td><td>System recommendations</td><td>9.52%</td><td><span class="tag tag-warn">Thấp — cần tối ưu</span></td></tr>
+<tr><td>4</td><td>Marketing pavilions</td><td>9.52%</td><td><span class="tag tag-warn">Thấp</span></td></tr>
+<tr><td>5</td><td>Search</td><td>9.52%</td><td><span class="tag tag-bad">Rất thấp — cần KWA</span></td></tr>
+<tr><td>6</td><td>Other</td><td>9.52%</td><td>-</td></tr>
+</tbody></table>
+
+<div class="talk">Traffic chủ yếu đến từ direct (42.86%) và storefront (19.05%), trong khi search chỉ 9.52%. Sản phẩm chưa được tối ưu cho tìm kiếm và chưa có quảng cáo trả phí. Người mua từ Đức + Mỹ + Thuỵ Điển = 35.72% — thị trường giá trị cao cần khai thác qua Self-Declaration EU và KWA.</div>
+</div></details>
+
+<!-- MODULE 4: STORE DIAGNOSIS -->
+<details class="acc" id="diagnosis"><summary>4. Chẩn đoán gian hàng</summary><div class="acc-body">
+
+<div class="conclusion-banner good" style="margin-bottom:12px;"><h4 style="color:var(--success);">Điểm mạnh</h4>
+<p>Số lượng sản phẩm lớn (979) với chất lượng rất cao: 585 sản phẩm 5.5+ (59.7%), 978 sản phẩm 4.5+, 972 sản phẩm 5.0+. Đã đạt ngưỡng Service 1 sao (6+ responded buyers). 95 sản phẩm RTS. Reply time 1.3h — nhanh hơn nhiều so với ngưỡng 24h. Showcase sử dụng 100% (20/20). Không vi phạm (violation score = 0).</p></div>
+<div class="conclusion-banner warn" style="margin-bottom:12px;"><h4 style="color:var(--danger);">Điểm yếu</h4>
+<p>Chưa có đơn hàng hoàn thành ($0 GMV). UV 91 — chưa đạt ngưỡng 100 cho 1 sao Marketing. Chưa đầu tư P4P/KWA (VND 0). Tháng 7 đã báo giá 40/40 RFQ nhưng cần lọc buyer tiềm năng thay vì tràn lan. Task hoàn thành chỉ 4/15 (26.7%). 2 đơn hàng tháng 7 chưa giao thành công.</p></div>
+<div class="conclusion-banner mixed"><h4 style="color:var(--primary);">Các điểm cần cải thiện chính</h4>
+<p>1. Xử lý 2 đơn hàng tháng 7: liên hệ Buyer, thảo luận MOQ/giá/vận chuyển, tạo đơn mới qua Trade Assurance. 2. Lọc lại 40 RFQ đã báo giá trong tháng 7 — tập trung reconnect buyer từ EU/Mỹ (35.72% traffic). 3. Cân nhắc gói gia hạn mới của Alibaba (bao gồm ngân sách quảng cáo + đảm bảo cơ hội kinh doanh). 4. Ký Food Self-Declaration EU để tiếp cận lưu lượng EU.</p></div>
+
+<h4 style="margin:20px 0 12px;color:var(--gray-600);">Chẩn đoán 4 lực Xếp hạng sao (Cập nhật theo dữ liệu thực tế)</h4>
+<table class="data-table star-table">
+<thead><tr><th>Năng lực</th><th>Sao hiện tại</th><th>Chỉ số</th><th>Giá trị hiện tại</th><th>1-Star</th><th>2-Star</th><th>3-Star</th><th>4-Star</th><th>Đánh giá</th></tr></thead>
+<tbody>
+<tr><td><strong>Sản phẩm (Product)</strong></td><td class="star-current" style="color:var(--primary);font-size:16px;">★★★★</td><td>Products (PIS >= x)</td><td class="good-text">979</td><td>50</td><td>200</td><td>500</td><td>800</td><td><span class="tag tag-good">4-Star — Vượt ngưỡng 800</span></td></tr>
+<tr><td><strong>Marketing</strong></td><td class="star-gap" style="color:var(--gray-400);font-size:16px;">☆☆☆☆☆</td><td>UV 30 days</td><td class="bad-text">91</td><td>100</td><td>300</td><td>800</td><td>1500</td><td><span class="tag tag-bad">0-Star — Cần +9 để đạt 1-Star</span></td></tr>
+<tr><td><strong>Dịch vụ (Service)</strong></td><td class="star-current" style="color:var(--primary);font-size:16px;">★</td><td>Responded buyers 30d</td><td class="good-text">6</td><td>1</td><td>10</td><td>20</td><td>50</td><td><span class="tag tag-warn">1-Star — Cần +4 để đạt 2-Star</span></td></tr>
+<tr><td><strong>Giao dịch (Sales)</strong></td><td class="star-gap" style="color:var(--gray-400);font-size:16px;">☆☆☆☆☆</td><td>GMV 90 days</td><td class="bad-text">$0</td><td>$0</td><td>$0</td><td>$1</td><td>$500</td><td><span class="tag tag-bad">0-Star — Bonus task Orders: 0/1</span></td></tr>
+</tbody></table>
+
+<h4 style="margin:20px 0 12px;color:var(--gray-600);">Phân tích chất lượng sản phẩm</h4>
+<table class="data-table">
+<thead><tr><th>Chỉ số</th><th>Giá trị</th><th>Đánh giá</th></tr></thead>
+<tbody>
+<tr><td>Sản phẩm hiệu lực</td><td class="good-text">979</td><td><span class="tag tag-good">Số lượng xuất sắc</span></td></tr>
+<tr><td>Sản phẩm 4.5+</td><td class="good-text">978</td><td><span class="tag tag-good">Tỷ lệ 99.9%</span></td></tr>
+<tr><td>Sản phẩm 5.0+</td><td class="good-text">972</td><td><span class="tag tag-good">Tỷ lệ 99.3%</span></td></tr>
+<tr><td>Sản phẩm 5.5+</td><td class="good-text">585</td><td><span class="tag tag-good">59.7% — rất mạnh</span></td></tr>
+<tr><td>Sản phẩm RTS</td><td class="good-text">95</td><td><span class="tag tag-good">Sẵn sàng giao</span></td></tr>
+<tr><td>Sản phẩm mới 30d</td><td class="good-text">97</td><td><span class="tag tag-good">Đang đăng bán tích cực</span></td></tr>
+<tr><td>Sản phẩm có AB</td><td class="warn-text">6</td><td><span class="tag tag-warn">Chỉ 0.6% — có thể cải thiện</span></td></tr>
+</tbody></table>
+
+<h4 style="margin:20px 0 12px;color:var(--gray-600);">Chẩn đoán sử dụng quyền lợi</h4>
+<table class="data-table">
+<thead><tr><th>Quyền lợi</th><th>Tổng</th><th>Đã dùng</th><th>Tỷ lệ</th><th>Trạng thái</th></tr></thead>
+<tbody>
+<tr><td>Showcase</td><td>20</td><td>20</td><td class="good-text">100%</td><td><span class="tag tag-good">Đã dùng hết</span></td></tr>
+<tr><td>RFQ đã báo giá (T7/2026)</td><td>40</td><td>40</td><td class="good-text">100%</td><td><span class="tag tag-good">Rất tích cực! Cần lọc buyer tiềm năng</span></td></tr>
+<tr><td>Smart Assistant</td><td colspan="3" style="color:var(--gray-500);">Chưa kích hoạt</td><td><span class="tag tag-bad">Chưa sử dụng</span></td></tr>
+<tr><td>Sub-accounts</td><td colspan="3" style="color:var(--gray-500);">Chưa thiết lập</td><td><span class="tag tag-bad">Chưa sử dụng</span></td></tr>
+</tbody></table>
+
+<div class="talk">NADISA có 2 điểm nổi bật: (1) Chất lượng sản phẩm XUẤT SẮC — 585/979 sản phẩm 5.5+, (2) Nhân sự mới RẤT TÍCH CỰC — 40/40 RFQ đã báo giá trong tháng 7, 97 sản phẩm mới, reply time 1.3h. Tuy nhiên, cần chuyển từ "báo giá tràn lan" sang "báo giá có mục tiêu": lọc RFQ theo thị trường EU/Mỹ (35.72% traffic), ưu tiên buyer L2+, và reconnect ngay những buyer tiềm năng nhất từ tháng 7. Kết hợp cân nhắc gói gia hạn mới của Alibaba (bao gồm ngân sách quảng cáo + đảm bảo cơ hội kinh doanh) để tăng tốc chuyển đổi.</div>
+</div></details>
+
+<!-- MODULE 5: GROWTH & PLAN -->
+<details class="acc" id="growth"><summary>5. Kế hoạch năm sau</summary><div class="acc-body">
+
+<h4 style="margin-bottom:12px;color:var(--gray-600);">Tổng quan chỉ số chính</h4>
+<div class="metric-grid">
+<div class="metric-card good"><div class="mc-label">Sản phẩm</div><div class="mc-value">979</div><div class="mc-sub">585 đạt 5.5+</div></div>
+<div class="metric-card info"><div class="mc-label">UV 30d</div><div class="mc-value">91</div><div class="mc-sub">Cần 100 cho 1 sao</div></div>
+<div class="metric-card warn"><div class="mc-label">Inquiries</div><div class="mc-value">11</div><div class="mc-sub">7 L2+ buyers</div></div>
+<div class="metric-card bad"><div class="mc-label">Đơn hàng</div><div class="mc-value">0</div><div class="mc-sub">2 đơn tháng 7 chưa hoàn thành</div></div>
+<div class="metric-card bad"><div class="mc-label">GMV 180d</div><div class="mc-value">$0</div><div class="mc-sub">Chưa có doanh thu</div></div>
+</div>
+
+<h4 style="margin:20px 0 12px;color:var(--gray-600);">Các mốc quan trọng</h4>
+<div class="tl">
+<div class="tl-item"><div class="tl-date">2025-09-09</div><div class="tl-text">Bắt đầu dịch vụ GGS</div></div>
+<div class="tl-item"><div class="tl-date">2025-09 ~ 2026-07</div><div class="tl-text">Xây dựng danh mục 979 sản phẩm (585 đạt 5.5+)</div></div>
+<div class="tl-item"><div class="tl-date">2026-07</div><div class="tl-text">2 đơn hàng buyer đặt (giao hàng chưa hoàn thành)</div></div>
+<div class="tl-item"><div class="tl-date">2026-07-17</div><div class="tl-text">Gia hạn thành công (Trần Thiên Đức)</div></div>
+<div class="tl-item"><div class="tl-date">2026-07</div><div class="tl-text">Nhân viên vận hành chuyên trách bắt đầu làm việc</div></div>
+<div class="tl-item"><div class="tl-date">2026-09-04</div><div class="tl-text">Deadline T3 Renew Final Shot (~25 ngày)</div></div>
+<div class="tl-item"><div class="tl-date">2026-09-13</div><div class="tl-text">Hết hạn dịch vụ hiện tại</div></div>
+</div>
+
+<h4 style="margin:24px 0 14px;color:var(--gray-600);font-size:16px;">Kế hoạch vận hành năm sau (Với nhân sự vận hành chuyên trách)</h4>
+<p style="font-size:14px;color:var(--gray-600);margin-bottom:16px;">NADISA đã tuyển nhân viên vận hành riêng (từ tháng 7/2026). Kế hoạch 4 quý dưới đây chuyển gian hàng từ "xây dựng" sang "doanh thu":</p>
+
+<table class="data-table plan-table">
+<thead><tr><th>Quý</th><th>Mục tiêu</th><th>Hành động cụ thể</th><th>KPIs</th></tr></thead>
+<tbody>
+<tr>
+<td class="quarter">Q1<br>(Tháng 1-3)</td>
+<td>Sửa đơn hàng + Kích hoạt marketing</td>
+<td>
+• Liên hệ 2 Buyer tháng 7, thảo luận và tạo đơn mới qua TA<br>
+• Lọc lại 40 RFQ đã báo giá: reconnect buyer EU/Mỹ (L2+)<br>
+• Tối ưu top 30 sản phẩm lên PIS 4.5+<br>
+• Cân nhắc gói gia hạn mới của Alibaba (QC + đảm bảo cơ hội KD)<br>
+• Ký Food Self-Declaration EU<br>
+• Thiết lập Sub-account cho nhân viên vận hành
+</td>
+<td>
+• UV: 91 → 400+<br>
+• Đơn hàng TA: 2+<br>
+• RFQ chất lượng cao: 15+/tháng<br>
+• KWA: bắt đầu đầu tư
+</td>
+</tr>
+<tr>
+<td class="quarter">Q2<br>(Tháng 4-6)</td>
+<td>Mở rộng traffic + Tăng chuyển đổi</td>
+<td>
+• Tăng ngân sách KWA (điều chỉnh theo hiệu quả Q1)<br>
+• Tối ưu thêm 50 sản phẩm (total 80 competitive)<br>
+• Báo giá RFQ: 15+/tháng<br>
+• Đăng 20+ sản phẩm mới theo xu hướng<br>
+• Phân tích dữ liệu KWA, tối ưu từ khoá
+</td>
+<td>
+• UV: 400 → 600+<br>
+• Đơn hàng: 2-3/tháng<br>
+• GMV: $500-1,500/tháng<br>
+• Sao: 2-Star
+</td>
+</tr>
+<tr>
+<td class="quarter">Q3<br>(Tháng 7-9)</td>
+<td>Tối ưu hiệu quả + Mở rộng EU</td>
+<td>
+• Duy trì ngân sách KWA đã điều chỉnh<br>
+• Tập trung sản phẩm tỷ lệ chuyển đổi cao<br>
+• Mở rộng thị trường EU (đã có Self-Declaration)<br>
+• Đánh giá hiệu quả 6 tháng đầu<br>
+• Chuẩn bị hồ sơ gia hạn
+</td>
+<td>
+• UV: 600 → 800+<br>
+• Đơn hàng: 3-5/tháng<br>
+• GMV: $1,500-3,000/tháng<br>
+• Sao: 2-3 Star
+</td>
+</tr>
+<tr>
+<td class="quarter">Q4<br>(Tháng 10-12)</td>
+<td>Ổn định + Tăng trưởng bền vững</td>
+<td>
+• Tối ưu chi phí KWA (giảm CPA)<br>
+• Xây dựng quan hệ với Buyer đã mua hàng<br>
+• Mở rộng danh mục theo phản hồi thị trường<br>
+• Hoàn thành mục tiêu năm<br>
+• Gia hạn sớm để giữ ưu đãi
+</td>
+<td>
+• UV: 800 → 1,000+<br>
+• Đơn hàng: 5-8/tháng<br>
+• GMV: $3,000-5,000/tháng<br>
+• Sao: 2-3 Star
+</td>
+</tr>
+</tbody></table>
+
+<h4 style="margin:24px 0 14px;color:var(--gray-600);font-size:16px;">Hướng tối ưu cốt lõi</h4>
+<div class="strategy-grid">
+<div class="strategy-box confidence"><h4>Nâng cấp chất lượng sản phẩm</h4><p><strong>Hành động:</strong> Duy trì và nâng cấp 585 sản phẩm 5.5+ lên 700+. Tập trung tối ưu hình ảnh, mô tả chi tiết, thông số kỹ thuật đầy đủ.</p><p><strong>Logic:</strong> Sản phẩm điểm cao được xếp hạng tìm kiếm tốt hơn, nhận nhiều lượt click hơn. NADISA đã có 59.7% sản phẩm 5.5+ — đây là lợi thế cạnh tranh lớn.</p><p><strong>Kỳ vọng:</strong> UV tăng 30-50% trong 30 ngày sau khi tối ưu + KWA.</p></div>
+<div class="strategy-box value"><h4>Kích hoạt quyền lợi + RFQ thông minh</h4><p><strong>Hành động:</strong> Lọc lại 40 RFQ đã báo giá trong tháng 7 — xác định buyer từ EU/Mỹ (L2+), reconnect những buyer tiềm năng nhất. Bật Smart Assistant, thiết lập Sub-account. Showcase đã sử dụng 100% — rất tốt.</p><p><strong>Logic:</strong> RFQ là nguồn người mua miễn phí — nhưng cần báo giá đúng đối tượng. Buyer từ EU/Mỹ có giá trị đơn hàng cao hơn 30-50% so với thị trường khác. Smart Assistant đảm bảo không bỏ lỡ người mua 24/7.</p><p><strong>Kỳ vọng:</strong> Tỷ lệ chuyển đổi RFQ tăng 2-3x khi tập trung vào buyer chất lượng cao.</p></div>
+<div class="strategy-box urgency"><h4>Traffic trả phí có mục tiêu</h4><p><strong>Hành động:</strong> Cân nhắc gói quảng cáo của Alibaba, tập trung vào sản phẩm 5.5+ có tiềm năng chuyển đổi cao.</p><p><strong>Logic:</strong> Search traffic chỉ 9.52% — cần KWA để tăng lưu lượng tìm kiếm. Với 585 sản phẩm 5.5+, đầu tư quảng cáo sẽ có hiệu quả cao.</p><p><strong>Kỳ vọng:</strong> UV từ 91 lên 400+, traffic trả phí tăng 30-50%.</p></div>
+<div class="strategy-box action"><h4>Phục hồi đơn hàng + TA</h4><p><strong>Hành động:</strong> Liên hệ 2 Buyer tháng 7, thảo luận về MOQ/giá/vận chuyển, hủy đơn cũ và tạo đơn mới qua Trade Assurance.</p><p><strong>Logic:</strong> 2 đơn hàng thất bại không có nghĩa là không có nhu cầu. Trade Assurance giúp tăng niềm tin, nhận traffic từ sàn (sao thưởng), và xây dựng lịch sử giao dịch.</p><p><strong>Kỳ vọng:</strong> 2 đơn hàng đầu tiên trong tháng tới, mở khoá Trade star rating.</p></div>
+</div>
+
+<!-- MARKET EXPANSION SECTION -->
+<div style="background:linear-gradient(135deg,#F0F9FF,#EFF6FF);border:2px solid #3B82F6;border-radius:var(--radius);padding:28px;margin:24px 0;">
+<h4 style="color:#1E40AF;font-size:16px;margin-bottom:6px;">Chiến lược mở rộng thị trường xuất khẩu</h4>
+<p style="font-size:13px;color:var(--gray-500);margin-bottom:16px;">Hiện tại traffic chủ yếu từ Việt Nam (21.43%). Mục tiêu năm 2: chuyển dịch sang xuất khẩu sang EU, Mỹ và các thị trường giá trị cao.</p>
+
+<h5 style="color:#1E40AF;font-size:14px;margin:18px 0 10px;">1. Chứng chỉ theo thị trường mục tiêu</h5>
+<table class="data-table">
+<thead><tr><th>Thị trường</th><th>Chứng chỉ yêu cầu</th><th>Ưu tiên</th><th>Trạng thái NADISA</th></tr></thead>
+<tbody>
+<tr><td><strong>EU (Đức, Thuỵ Điển...)</strong><br>35.72% traffic tiềm năng</td><td>Food Self-Declaration EU, HACCP, ISO 22000, EU Organic (nếu có)</td><td><span class="tag tag-bad">Cấp thiết</span></td><td>Chưa có — cần ký ngay</td></tr>
+<tr><td><strong>United States</strong><br>14.29% traffic</td><td>FDA Registration, FSMA compliance, USDA (nếu organic)</td><td><span class="tag tag-warn">Quan trọng</span></td><td>Chưa có</td></tr>
+<tr><td><strong>Israel</strong><br>7.14% traffic</td><td>Kosher certification, Ministry of Health import permit</td><td><span class="tag tag-info">Trung bình</span></td><td>Chưa có</td></tr>
+<tr><td><strong>Nga</strong><br>7.14% traffic</td><td>EAC (Eurasian Conformity), Rosselkhoznadzor registration</td><td><span class="tag tag-info">Trung bình</span></td><td>Chưa có</td></tr>
+<tr><td><strong>ASEAN</strong><br>Thị trường lân cận</td><td>GMP, HACCP, country-specific food safety certs</td><td><span class="tag tag-good">Dễ tiếp cận</span></td><td>Có thể bắt đầu sớm</td></tr>
+</tbody></table>
+
+<h5 style="color:#1E40AF;font-size:14px;margin:18px 0 10px;">2. Cập nhật bài đăng & Keywords theo thị trường</h5>
+<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;">
+<div style="background:#fff;border-radius:8px;padding:14px;border:1px solid #BFDBFE;">
+<strong style="color:#1E40AF;font-size:13px;">EU Market Keywords</strong>
+<p style="font-size:12px;color:var(--gray-600);margin-top:6px;">"Vietnamese rice noodles exporter", "bulk rice vermicelli EU", "gluten-free Asian noodles wholesale", "OEM rice products Europe", "private label Vietnamese food"</p>
+</div>
+<div style="background:#fff;border-radius:8px;padding:14px;border:1px solid #BFDBFE;">
+<strong style="color:#1E40AF;font-size:13px;">US Market Keywords</strong>
+<p style="font-size:12px;color:var(--gray-600);margin-top:6px;">"Vietnamese food manufacturer USA", "bulk Asian noodles supplier", "rice paper wholesale USA", "private label Asian food products", "FDA registered Vietnamese food"</p>
+</div>
+<div style="background:#fff;border-radius:8px;padding:14px;border:1px solid #BFDBFE;">
+<strong style="color:#1E40AF;font-size:13px;">Tối ưu mô tả sản phẩm</strong>
+<p style="font-size:12px;color:var(--gray-600);margin-top:6px;">Thêm thông tin: MOQ linh hoạt cho buyer nhỏ, packaging options (bulk/retail), lead time, port of shipment (Hai Phong), payment terms (T/T, L/C, Trade Assurance)</p>
+</div>
+<div style="background:#fff;border-radius:8px;padding:14px;border:1px solid #BFDBFE;">
+<strong style="color:#1E40AF;font-size:13px;">Hình ảnh & Video</strong>
+<p style="font-size:12px;color:var(--gray-600);margin-top:6px;">Thêm ảnh nhà máy, quy trình sản xuất, chứng chỉ chất lượng, ảnh đóng gói xuất khẩu. Video ngắn quy trình sản xuất tăng trust 40%.</p>
+</div>
+</div>
+
+<h5 style="color:#1E40AF;font-size:14px;margin:18px 0 10px;">3. Chạy Ads hướng tới thị trường mục tiêu</h5>
+<table class="data-table">
+<thead><tr><th>Kênh</th><th>Chiến lược</th><th>Thị trường target</th><th>Ngân sách đề xuất</th></tr></thead>
+<tbody>
+<tr><td><strong>KWA (Keyword Advertising)</strong></td><td>Bidding từ khoá tiếng Anh cho sản phẩm 5.5+, geo-targeting EU + Mỹ</td><td>EU, US</td><td>Cân nhắc gói gia hạn mới của Alibaba</td></tr>
+<tr><td><strong>Smart Marketing</strong></td><td>Auto-bidding cho top 30 sản phẩm competitive, tập trung buyer L2+ từ EU/Mỹ</td><td>EU, US, Israel</td><td>Bắt đầu từ mức thấp, scale theo ROI</td></tr>
+<tr><td><strong>RFQ Premium</strong></td><td>Ưu tiên báo giá RFQ từ buyer EU/Mỹ, bỏ qua RFQ giá trị thấp</td><td>Toàn cầu (lọc theo quốc gia)</td><td>Đã có trong gói hội viên</td></tr>
+<tr><td><strong>Top Ranking / Sponsored</strong></td><td>Đấu thầu vị trí top cho từ khoá chính ngành Grain Products</td><td>EU, US</td><td>Q2-Q3 sau khi có đơn hàng đầu tiên</td></tr>
+</tbody></table>
+
+<p style="margin-top:16px;font-size:13px;color:var(--gray-600);"><strong>Lộ trình đề xuất:</strong> Tháng 1-2: Ký Food Self-Declaration EU + tối ưu keywords → Tháng 3-4: Bắt đầu KWA geo-targeting EU/Mỹ → Tháng 5-6: Mở rộng sang FDA + US market → Tháng 7-12: Scale ads theo ROI, thêm thị trường Israel/Nga.</p>
+</div>
+
+<div class="conclusion-banner good"><h4 style="color:var(--success);">Tiềm năng tăng trưởng năm sau (Tham khảo)</h4>
+<p><strong>UV hàng tháng:</strong> 91 → 400-600 (sau tối ưu sản phẩm + KWA)</p>
+<p><strong>Đơn hàng hàng tháng:</strong> 0 → 2-5 (dựa trên 11 inquiries hiện tại + RFQ chất lượng cao + cải thiện xử lý đơn hàng)</p>
+<p><strong>GMV hàng tháng:</strong> $0 → $500-3,000 (tuỳ giá trị đơn hàng trung bình ngành thực phẩm/ngũ cốc)</p>
+<p><strong>Xếp hạng sao:</strong> 1-Star → 2-Star (Product đã 4-Star, cần cải thiện Marketing từ 0-Star và Sales từ 0-Star)</p>
+<p class="disclaimer">Các dự đoán trên dựa trên dữ liệu hiện tại. Kết quả thực tế có thể thay đổi tuỳ điều kiện thị trường và vận hành của gian hàng. Đây không phải là cam kết doanh thu.</p></div>
+
+<div class="talk">NADISA team, năm đầu tiên các bạn đã xây dựng nền tảng tốt với 979 sản phẩm (585 tại 5.5+). Năm thứ 2 là năm chuyển đổi — từ "có sản phẩm" sang "có đơn hàng". Với nhân viên vận hành chuyên trách (từ tháng 7/2026), kế hoạch 4 quý trên sẽ giúp gian hàng đạt 2 sao và tạo doanh thu ổn định. Bước đầu tiên: liên hệ 2 Buyer tháng 7 + lọc RFQ reconnect buyer EU/Mỹ + cân nhắc gói gia hạn mới của Alibaba trong tuần này.</div>
+
+<div style="background:linear-gradient(135deg,#FFF7ED,#FFFBEB);border:2px solid var(--primary);border-radius:var(--radius);padding:28px;margin:24px 0;">
+<h4 style="color:var(--primary);font-size:16px;margin-bottom:14px;">Đề xuất gói gia hạn mới Alibaba cho NADISA</h4>
+<p style="font-size:14px;color:var(--gray-700);line-height:1.8;margin-bottom:12px;">Dựa trên phân tích hiệu suất năm 1 và tiềm năng năm 2, đề xuất NADISA cân nhắc <strong>gói gia hạn kết hợp</strong> từ Alibaba bao gồm:</p>
+<ul style="margin:8px 0 0 20px;font-size:14px;color:var(--gray-700);line-height:1.8;">
+<li><strong>Ngân sách quảng cáo KWA tích hợp:</strong> Gói gia hạn bao gồm ngân sách quảng cáo trả phí (KWA/P4P) giúp sản phẩm 5.5+ tiếp cận trực tiếp người mua từ EU, Mỹ — thị trường chiếm 35.72% traffic nhưng hiện chưa được khai thác đúng mức.</li>
+<li><strong>Đảm bảo cơ hội kinh doanh:</strong> Gói gia hạn mới cam kết số lượng inquiries/RFQ tối thiểu, đảm bảo NADISA nhận đủ cơ hội từ sàn để chuyển đổi thành đơn hàng Trade Assurance.</li>
+<li><strong>Hỗ trợ vận hành chuyên sâu:</strong> Được hỗ trợ tối ưu sản phẩm, hướng dẫn xử lý đơn hàng TA, và tư vấn chiến lược RFQ theo thị trường mục tiêu.</li>
+<li><strong>Ưu đãi gia hạn sớm:</strong> Liên hệ sales Trần Thiên Đức trước deadline T3 (~25 ngày) để nhận ưu đãi đặc biệt cho gói gia hạn kết hợp.</li>
+</ul>
+<p style="margin-top:14px;font-weight:600;color:var(--primary);font-size:14px;">Liên hệ ngay sales Trần Thiên Đức để được tư vấn chi tiết gói gia hạn phù hợp nhất cho NADISA!</p>
+</div>
+</div></details>
+
+</div>
+
+<div class="footer"><p>Báo cáo gia hạn GGS · NADISA FOOD COMPANY LIMITED · Tạo ngày 2026-08-11 · Nguồn dữ liệu: In-Service List (FY27 DS) + CRM + Phân tích lưu lượng</p>
+<p class="disclaimer">Báo cáo này được tạo dựa trên dữ liệu từ bảng In-Service List, CRM Alibaba và phân tích lưu lượng. Các dự báo tăng trưởng chỉ mang tính tham khảo, không phải cam kết doanh thu.</p></div>
+</div>
+
+<script>
+document.querySelectorAll('.acc').forEach(el=>{el.addEventListener('toggle',function(){if(this.open&&this.id==='growth')setTimeout(renderChart,100);});});
+let chartRendered=false;
+function renderChart(){if(chartRendered)return;chartRendered=true;
+const ctx=document.getElementById('trendChart').getContext('2d');
+new Chart(ctx,{type:'line',data:{labels:["Sep 25","Oct 25","Nov 25","Dec 25","Jan 26","Feb 26","Mar 26","Apr 26","May 26","Jun 26","Jul 26","Aug 26"],datasets:[
+{label:'UV (Lượt truy cập)',data:[0,30,40,50,55,60,65,70,75,80,85,91],borderColor:'#3B82F6',backgroundColor:'rgba(59,130,246,0.08)',fill:true,yAxisID:'y',tension:0.35},
+{label:'Inquiries (AB)',data:[0,1,2,3,4,5,6,7,8,9,10,11],borderColor:'#FF6A00',yAxisID:'y1',tension:0.35},
+{label:'Đơn hàng',data:[0,0,0,0,0,0,0,0,0,0,2,0],borderColor:'#10B981',borderDash:[4,2],yAxisID:'y1',tension:0.35}
+]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{position:'top'}},scales:{y:{type:'linear',position:'left',title:{display:true,text:'UV / Lượt truy cập',color:'#3B82F6'},grid:{color:'rgba(0,0,0,0.04)'}},y1:{type:'linear',position:'right',title:{display:true,text:'Inquiries / Đơn hàng',color:'#FF6A00'},grid:{drawOnChartArea:false}}}}})};
+const navLinks=document.querySelectorAll('.side-nav a');
+const sections=['snapshot','profile','highlights','pitch','value','diagnosis','growth'];
+window.addEventListener('scroll',()=>{let current=sections[0];for(const id of sections){const el=document.getElementById(id);if(el&&el.getBoundingClientRect().top<=120)current=id;}navLinks.forEach(a=>{a.classList.toggle('active',a.getAttribute('href')==='#'+current);});});
+</script>
+</body></html>
