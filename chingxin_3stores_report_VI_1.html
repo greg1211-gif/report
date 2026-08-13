@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Báo cáo tổng hợp 3 gian hàng CHING XIN | 辰信三店综合报告</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f2f5;color:#333;overflow-x:hidden}
+.container{max-width:1200px;margin:0 auto;padding:20px}
+.header{background:linear-gradient(135deg,#1a237e,#0d47a1);color:#fff;padding:30px;border-radius:12px;margin-bottom:24px;text-align:center}
+.header h1{font-size:28px;margin-bottom:8px}
+.header p{opacity:0.9;font-size:14px}
+.tab-radio{display:none;position:absolute}
+.tab-nav{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
+.tab-label{padding:10px 20px;background:#e0e0e0;border-radius:8px;cursor:pointer;font-size:14px;font-weight:600;transition:all .3s;user-select:none}
+.tab-label:hover{background:#bdbdbd}
+.tab-content{display:none}
+#t1:checked ~ .tab-nav label[for="t1"],
+#t2:checked ~ .tab-nav label[for="t2"],
+#t3:checked ~ .tab-nav label[for="t3"],
+#t4:checked ~ .tab-nav label[for="t4"],
+#t5:checked ~ .tab-nav label[for="t5"],
+#t6:checked ~ .tab-nav label[for="t6"],
+#t7:checked ~ .tab-nav label[for="t7"]{background:#1a237e;color:#fff}
+#t1:checked ~ .tc1,
+#t2:checked ~ .tc2,
+#t3:checked ~ .tc3,
+#t4:checked ~ .tc4,
+#t5:checked ~ .tc5,
+#t6:checked ~ .tc6,
+#t7:checked ~ .tc7{display:block}
+.card{background:#fff;border-radius:12px;padding:24px;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.card h2{color:#1a237e;font-size:20px;margin-bottom:16px;border-bottom:2px solid #e3f2fd;padding-bottom:8px}
+.card h3{color:#0d47a1;font-size:16px;margin:16px 0 10px}
+.metrics-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-bottom:20px}
+.metric-card{background:linear-gradient(135deg,#e3f2fd,#bbdefb);border-radius:10px;padding:20px;text-align:center}
+.metric-card.warn{background:linear-gradient(135deg,#fff3e0,#ffe0b2)}
+.metric-card.danger{background:linear-gradient(135deg,#ffebee,#ffcdd2)}
+.metric-card.success{background:linear-gradient(135deg,#e8f5e9,#c8e6c9)}
+.metric-card .label{font-size:13px;color:#555;margin-bottom:6px}
+.metric-card .value{font-size:28px;font-weight:700;color:#1a237e}
+.metric-card .sub{font-size:12px;color:#777;margin-top:4px}
+.store-badge{display:inline-block;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600;margin:2px}
+.badge-fg{background:#e8f5e9;color:#2e7d32}
+.badge-lf{background:#e3f2fd;color:#1565c0}
+.badge-zj{background:#fff3e0;color:#e65100}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:13px}
+th,td{padding:10px 8px;text-align:center;border:1px solid #e0e0e0}
+th{background:#1a237e;color:#fff;font-weight:600}
+tr:nth-child(even){background:#f5f5f5}
+tr:hover{background:#e3f2fd}
+.chart-container{position:relative;height:350px;margin:16px 0}
+.highlight{background:#fffde7;border-left:4px solid #fbc02d;padding:12px 16px;margin:12px 0;border-radius:0 8px 8px 0}
+.highlight.good{border-left-color:#4caf50;background:#e8f5e9}
+.highlight.bad{border-left-color:#f44336;background:#ffebee}
+.highlight.info{border-left-color:#2196f3;background:#e3f2fd}
+.sec{overflow-wrap:break-word;word-break:break-word}
+.table-wrap{overflow-x:auto;margin:12px 0}
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;margin:1px}
+.tag-up{background:#e8f5e9;color:#2e7d32}
+.tag-down{background:#ffebee;color:#c62828}
+.tag-flat{background:#fff3e0;color:#e65100}
+.summary-box{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:16px 0}
+.summary-item{padding:16px;border-radius:8px;text-align:center}
+.summary-item.fg{background:#e8f5e9}.summary-item.lf{background:#e3f2fd}.summary-item.zj{background:#fff3e0}
+.summary-item .name{font-weight:700;font-size:14px;margin-bottom:4px}
+.summary-item .num{font-size:22px;font-weight:700;color:#1a237e}
+.renew-box{background:linear-gradient(135deg,#1b5e20,#2e7d32);color:#fff;border-radius:12px;padding:24px;margin:16px 0}
+.renew-box h3{color:#fff;border-bottom:1px solid rgba(255,255,255,.3);padding-bottom:8px;margin-bottom:12px}
+.renew-box .big-num{font-size:36px;font-weight:700;color:#a5d6a7}
+.industry-card{border:2px solid #e0e0e0;border-radius:12px;padding:20px;margin:12px 0;position:relative;overflow:hidden}
+.industry-card::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;background:#1a237e}
+.industry-card.hot{border-color:#4caf50}.industry-card.hot::before{background:#4caf50}
+.industry-card.warm{border-color:#ff9800}.industry-card.warm::before{background:#ff9800}
+.industry-card.cool{border-color:#2196f3}.industry-card.cool::before{background:#2196f3}
+.growth-badge{display:inline-block;background:#e8f5e9;color:#2e7d32;padding:4px 12px;border-radius:20px;font-weight:700;font-size:14px}
+.footer{text-align:center;padding:20px;color:#999;font-size:12px}
+@media(max-width:768px){.metrics-grid{grid-template-columns:1fr}.summary-box{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1>BÁO CÁO TỔNG HỢP 3 GIAN HÀNG CHING XIN</h1>
+<p>辰信集团三店综合分析报告 | Period: 08/2025 - 07/2026 | Account Manager: Chloe Nguyen</p>
+</div>
+
+<div class="tab-wrapper">
+<input type="radio" name="tab" id="t1" checked class="tab-radio">
+<input type="radio" name="tab" id="t2" class="tab-radio">
+<input type="radio" name="tab" id="t3" class="tab-radio">
+<input type="radio" name="tab" id="t4" class="tab-radio">
+<input type="radio" name="tab" id="t5" class="tab-radio">
+<input type="radio" name="tab" id="t6" class="tab-radio">
+<input type="radio" name="tab" id="t7" class="tab-radio">
+<div class="tab-nav">
+<label for="t1" class="tab-label">Tổng quan</label>
+<label for="t2" class="tab-label">Traffic & Exposure</label>
+<label for="t3" class="tab-label">BO & Inquiries</label>
+<label for="t4" class="tab-label">Service Quality</label>
+<label for="t5" class="tab-label">Sản phẩm</label>
+<label for="t6" class="tab-label">Triển vọng ngành</label>
+<label for="t7" class="tab-label">Phân tích & Kiến nghị</label>
+</div>
+
+<!-- ===== TAB: OVERVIEW ===== -->
+<div class="tab-content tc1">
+<div class="card sec">
+<h2>1. Tổng quan 3 gian hàng</h2>
+<div class="summary-box">
+<div class="summary-item fg">
+<div class="name">FENG GUANG 风光</div>
+<div class="sub"><span class="store-badge badge-fg">Home & Garden</span> <span class="store-badge badge-fg">Healthy</span></div>
+<div class="num" style="margin-top:8px">161,825</div>
+<div class="sub">Search Exposures</div>
+<div style="margin-top:6px;font-size:13px">446 BO | 83 Inquiries | 68 Active Buyers</div>
+</div>
+<div class="summary-item lf">
+<div class="name">LING FENG 凌风</div>
+<div class="sub"><span class="store-badge badge-lf">Fabric & Textile</span> <span class="store-badge badge-lf">Healthy</span></div>
+<div class="num" style="margin-top:8px">207,717</div>
+<div class="sub">Search Exposures</div>
+<div style="margin-top:6px;font-size:13px">460 BO | 53 Inquiries | 42 Active Buyers</div>
+</div>
+<div class="summary-item zj">
+<div class="name">ZHIJIA 智家</div>
+<div class="sub"><span class="store-badge badge-zj">Tools & Hardware</span> <span class="store-badge badge-zj">Unhealthy</span></div>
+<div class="num" style="margin-top:8px">136,919</div>
+<div class="sub">Search Exposures</div>
+<div style="margin-top:6px;font-size:13px">559 BO | 70 Inquiries | 60 Active Buyers</div>
+</div>
+</div>
+
+<div class="table-wrap">
+<table>
+<tr><th>Chỉ số</th><th>FENG GUANG</th><th>LING FENG</th><th>ZHIJIA</th><th>Tổng 3店</th></tr>
+<tr><td><b>Search Exposures</b></td><td>161,825</td><td>207,717</td><td>136,919</td><td><b>506,461</b></td></tr>
+<tr><td><b>BO (Business Opportunities)</b></td><td>446</td><td>460</td><td>559</td><td><b>1,465</b></td></tr>
+<tr><td style="padding-left:20px;text-align:left">- Inquiries</td><td>83</td><td>53</td><td>70</td><td><b>206</b></td></tr>
+<tr><td style="padding-left:20px;text-align:left">- Messages</td><td>363</td><td>407</td><td>489</td><td><b>1,259</b></td></tr>
+<tr><td><b>Active Buyers (Inquiry Visitors)</b></td><td>68</td><td>42</td><td>60</td><td><b>170</b></td></tr>
+<tr><td><b>BO Conv. Rate (Jul/26)</b></td><td>4.78%</td><td>5.84%</td><td>16.96%</td><td>-</td></tr>
+<tr><td><b>Star Rating</b></td><td>Healthy</td><td>Healthy</td><td>Unhealthy</td><td>-</td></tr>
+<tr><td><b>Total Products</b></td><td>1,842</td><td>2,022</td><td>1,873</td><td><b>5,737</b></td></tr>
+<tr><td><b>Trade Assurance Orders</b></td><td style="color:red;font-weight:700">0</td><td style="color:red;font-weight:700">0</td><td style="color:red;font-weight:700">0</td><td style="color:red;font-weight:700">0</td></tr>
+</table>
+</div>
+
+<div class="highlight info sec">
+<b>Công thức tính BO:</b> BO (Business Opportunities) = Tổng Inquiries + Tổng Messages. Đây là tổng số cơ hội kinh doanh mà mỗi gian hàng nhận được trong kỳ.
+</div>
+<div class="highlight info sec">
+<b>Phát hiện quan trọng:</b> Cả 3 gian hàng đều có lượng BO ổn (446-559 BO/năm) và tổng <b>1,465 cơ hội kinh doanh</b>, nhưng <b>KHÔNG có đơn hàng Trade Assurance nào</b>. Đây là vấn đề cốt lõi cần giải quyết - xem phân tích chi tiết ở tab "Phân tích & Kiến nghị".
+</div>
+</div>
+</div>
+
+<!-- ===== TAB: TRAFFIC ===== -->
+<div class="tab-content tc2">
+<div class="card sec">
+<h2>2. Phân tích Traffic & Search Exposure (08/2025 - 07/2026)</h2>
+
+<div class="metrics-grid">
+<div class="metric-card success">
+<div class="label">FENG GUANG - Total Exposure</div>
+<div class="value">161,825</div>
+<div class="sub">Ngành Home & Garden | TB: ~13,486/tháng</div>
+</div>
+<div class="metric-card">
+<div class="label">LING FENG - Total Exposure</div>
+<div class="value">207,717</div>
+<div class="sub">Ngành Fabric & Textile | TB: ~17,310/tháng</div>
+</div>
+<div class="metric-card warn">
+<div class="label">ZHIJIA - Total Exposure</div>
+<div class="value">136,919</div>
+<div class="sub">Ngành Tools & Hardware | TB: ~11,410/tháng</div>
+</div>
+</div>
+
+<h3>Biểu đồ Search Exposure theo tháng</h3>
+<div class="chart-container"><canvas id="exposureChart"></canvas></div>
+
+<h3>Bảng chi tiết Search Exposure theo tháng</h3>
+<div class="table-wrap">
+<table>
+<tr><th>Tháng</th><th>FENG GUANG</th><th>vs TB ngành</th><th>LING FENG</th><th>vs TB ngành</th><th>ZHIJIA</th><th>vs TB ngành</th></tr>
+<tr><td>08/2025</td><td>8,431</td><td><span class="tag tag-up">Above</span></td><td>14,815</td><td><span class="tag tag-up">Above</span></td><td>7,536</td><td><span class="tag tag-up">Above</span></td></tr>
+<tr><td>09/2025</td><td>9,122</td><td><span class="tag tag-up">Above</span></td><td>10,131</td><td><span class="tag tag-flat">Near</span></td><td>13,083</td><td><span class="tag tag-up">Above</span></td></tr>
+<tr><td>10/2025</td><td>12,750</td><td><span class="tag tag-up">Above</span></td><td>11,413</td><td><span class="tag tag-flat">Near</span></td><td>13,006</td><td><span class="tag tag-up">Above</span></td></tr>
+<tr><td>11/2025</td><td>11,401</td><td><span class="tag tag-up">Above</span></td><td>23,474</td><td><span class="tag tag-up">Above</span></td><td>12,648</td><td><span class="tag tag-up">Above</span></td></tr>
+<tr><td>12/2025</td><td>10,913</td><td><span class="tag tag-up">Above</span></td><td>21,641</td><td><span class="tag tag-up">Above</span></td><td>12,850</td><td><span class="tag tag-up">Above</span></td></tr>
+<tr><td>01/2026</td><td>17,116</td><td><span class="tag tag-up">Above</span></td><td>26,901</td><td><span class="tag tag-up">Above</span></td><td>13,304</td><td><span class="tag tag-up">Above</span></td></tr>
+<tr><td>02/2026</td><td>11,309</td><td><span class="tag tag-up">Above</span></td><td>19,462</td><td><span class="tag tag-up">Above</span></td><td>11,318</td><td><span class="tag tag-up">Above</span></td></tr>
+<tr><td>03/2026</td><td>13,813</td><td><span class="tag tag-up">Above</span></td><td>19,197</td><td><span class="tag tag-up">Above</span></td><td>11,430</td><td><span class="tag tag-up">Above</span></td></tr>
+<tr><td>04/2026</td><td>13,881</td><td><span class="tag tag-up">Above</span></td><td>19,764</td><td><span class="tag tag-up">Above</span></td><td>11,628</td><td><span class="tag tag-up">Above</span></td></tr>
+<tr><td>05/2026</td><td>15,451</td><td><span class="tag tag-up">Above</span></td><td>21,104</td><td><span class="tag tag-up">Above</span></td><td>11,318</td><td><span class="tag tag-up">Above</span></td></tr>
+<tr><td>06/2026</td><td>16,308</td><td><span class="tag tag-up">Above</span></td><td>23,960</td><td><span class="tag tag-up">Above</span></td><td>11,430</td><td><span class="tag tag-up">Above</span></td></tr>
+<tr><td>07/2026</td><td style="font-weight:700">21,291</td><td><span class="tag tag-up">Above</span></td><td style="font-weight:700">24,017</td><td><span class="tag tag-up">Above</span></td><td style="font-weight:700">11,628</td><td><span class="tag tag-up">Above</span></td></tr>
+<tr style="background:#e3f2fd;font-weight:700"><td>TỔNG</td><td>161,825</td><td></td><td>207,717</td><td></td><td>136,919</td><td></td></tr>
+</table>
+</div>
+
+<h3>Xu hướng & Nhận xét</h3>
+<div class="highlight good sec">
+<b>FENG GUANG:</b> Traffic tăng trưởng mạnh +152% từ 8,431 (08/25) lên 21,291 (07/26). Tín hiệu rất tích cực.
+</div>
+<div class="highlight good sec">
+<b>LING FENG:</b> Exposure cao nhất nhóm (207,717), tăng +62%. Đỉnh 01/2026 đạt 26,901.
+</div>
+<div class="highlight sec">
+<b>ZHIJIA:</b> Exposure tăng +54% nhưng tổng thấp nhất. Tăng trưởng ổn định cho thấy keyword optimization hiệu quả.
+</div>
+</div>
+</div>
+
+<!-- ===== TAB: INQUIRY ===== -->
+<div class="tab-content tc3">
+<div class="card sec">
+<h2>3. Phân tích BO (Business Opportunities) & Inquiries</h2>
+
+<div class="highlight info sec" style="margin-bottom:16px">
+<b>Công thức:</b> <b>BO = Inquiries + Messages</b>. BO thể hiện tổng số cơ hội kinh doanh (buyer liên hệ trực tiếp + buyer gửi tin nhắn). Đây là chỉ số quan trọng nhất đánh giá hiệu quả kinh doanh trên Alibaba.
+</div>
+
+<div class="metrics-grid">
+<div class="metric-card success">
+<div class="label">FENG GUANG - Tổng BO</div>
+<div class="value">446</div>
+<div class="sub">= 83 Inquiries + 363 Messages</div>
+<div class="sub" style="margin-top:4px">68 Active Buyers</div>
+</div>
+<div class="metric-card">
+<div class="label">LING FENG - Tổng BO</div>
+<div class="value">460</div>
+<div class="sub">= 53 Inquiries + 407 Messages</div>
+<div class="sub" style="margin-top:4px">42 Active Buyers</div>
+</div>
+<div class="metric-card warn">
+<div class="label">ZHIJIA - Tổng BO</div>
+<div class="value">559</div>
+<div class="sub">= 70 Inquiries + 489 Messages</div>
+<div class="sub" style="margin-top:4px">60 Active Buyers</div>
+</div>
+</div>
+
+<h3>Biểu đồ BO theo tháng (Inquiries + Messages)</h3>
+<div class="chart-container"><canvas id="boChart"></canvas></div>
+
+<h3>Bảng chi tiết BO theo tháng</h3>
+<div class="table-wrap">
+<table>
+<tr><th rowspan="2">Tháng</th><th colspan="2">FENG GUANG</th><th colspan="2">LING FENG</th><th colspan="2">ZHIJIA</th></tr>
+<tr><th>Inquiries</th><th>Messages</th><th>Inquiries</th><th>Messages</th><th>Inquiries</th><th>Messages</th></tr>
+<tr><td>08/2025</td><td>8</td><td>30</td><td>3</td><td>43</td><td>0</td><td>21</td></tr>
+<tr><td>09/2025</td><td>10</td><td>36</td><td>3</td><td>13</td><td>0</td><td>54</td></tr>
+<tr><td>10/2025</td><td>2</td><td>58</td><td>4</td><td>14</td><td>9</td><td>68</td></tr>
+<tr><td>11/2025</td><td>5</td><td>36</td><td>7</td><td>41</td><td>5</td><td>36</td></tr>
+<tr><td>12/2025</td><td>8</td><td>22</td><td>5</td><td>49</td><td>1</td><td>33</td></tr>
+<tr><td>01/2026</td><td>8</td><td>21</td><td>4</td><td>42</td><td>8</td><td>39</td></tr>
+<tr><td>02/2026</td><td>12</td><td>24</td><td>4</td><td>18</td><td>3</td><td>25</td></tr>
+<tr><td>03/2026</td><td>6</td><td>15</td><td>5</td><td>21</td><td>6</td><td>26</td></tr>
+<tr><td>04/2026</td><td>7</td><td>22</td><td>1</td><td>20</td><td>5</td><td>25</td></tr>
+<tr><td>05/2026</td><td>7</td><td>31</td><td>2</td><td>46</td><td>4</td><td>52</td></tr>
+<tr><td>06/2026</td><td>2</td><td>21</td><td>4</td><td>33</td><td>8</td><td>33</td></tr>
+<tr><td>07/2026</td><td>8</td><td>47</td><td>5</td><td>67</td><td>10</td><td>77</td></tr>
+<tr style="background:#e3f2fd;font-weight:700"><td>TỔNG</td><td>83</td><td>363</td><td>53</td><td>407</td><td>70</td><td>489</td></tr>
+<tr style="background:#bbdefb;font-weight:700"><td>BO (Inq+Msg)</td><td colspan="2">446</td><td colspan="2">460</td><td colspan="2">559</td></tr>
+<tr style="background:#90caf9;font-weight:700"><td>Active Buyers</td><td colspan="2">68</td><td colspan="2">42</td><td colspan="2">60</td></tr>
+</table>
+</div>
+
+<h3>Tỷ lệ BO/Exposure</h3>
+<div class="table-wrap">
+<table>
+<tr><th>Gian hàng</th><th>Search Exposures</th><th>Tổng BO</th><th>BO Rate</th><th>Đánh giá</th></tr>
+<tr><td>FENG GUANG</td><td>161,825</td><td>446</td><td>0.276%</td><td><span class="tag tag-up">Khá</span></td></tr>
+<tr><td>LING FENG</td><td>207,717</td><td>460</td><td>0.221%</td><td><span class="tag tag-flat">Trung bình</span></td></tr>
+<tr><td>ZHIJIA</td><td>136,919</td><td>559</td><td>0.408%</td><td><span class="tag tag-up">Tốt</span></td></tr>
+</table>
+</div>
+
+<div class="highlight good sec">
+<b>ZHIJIA dẫn đầu BO rate (0.408%):</b> Exposure thấp nhất nhưng BO rate cao nhất, cho thấy sản phẩm Tools & Hardware có buyer chất lượng cao. Tín hiệu rất tốt cho conversion.
+</div>
+</div>
+</div>
+
+<!-- ===== TAB: SERVICE ===== -->
+<div class="tab-content tc4">
+<div class="card sec">
+<h2>4. Chất lượng dịch vụ & Phản hồi</h2>
+<div class="metrics-grid">
+<div class="metric-card success">
+<div class="label">FENG GUANG - Timely Response</div>
+<div class="value">96.15%</div>
+<div class="sub">Avg Reply: 3.8h | Trend: Cải thiện</div>
+</div>
+<div class="metric-card danger">
+<div class="label">LING FENG - Timely Response</div>
+<div class="value">59.09%</div>
+<div class="sub">Avg Reply: 15.2h | Trend: Xấu đi</div>
+</div>
+<div class="metric-card">
+<div class="label">ZHIJIA - Timely Response</div>
+<div class="value">96.39%</div>
+<div class="sub">Avg Reply: 2.2h | Trend: Cải thiện mạnh</div>
+</div>
+</div>
+<h3>Biểu đồ Timely Response Rate theo tháng</h3>
+<div class="chart-container"><canvas id="responseChart"></canvas></div>
+<div class="highlight bad sec">
+<b>LING FENG - Báo động đỏ:</b> Timely Response giảm 77.27% → 59.09%, Avg Reply 15.2h. Cần cài Alibaba app, auto-reply, phân ca trực.
+</div>
+<div class="highlight good sec">
+<b>ZHIJIA - Xuất sắc:</b> Reply 12.4h → 2.2h, Timely 76% → 96.39%.
+</div>
+<div class="highlight good sec">
+<b>FENG GUANG - Ổn định:</b> Timely 81.58% → 96.15%, reply 8.8h → 3.8h.
+</div>
+</div>
+</div>
+
+<!-- ===== TAB: PRODUCTS ===== -->
+<div class="tab-content tc5">
+<div class="card sec">
+<h2>5. Phân tích Sản phẩm</h2>
+<div class="table-wrap">
+<table>
+<tr><th>Chỉ số</th><th>FENG GUANG</th><th>LING FENG</th><th>ZHIJIA</th></tr>
+<tr><td>Tổng sản phẩm</td><td>1,842</td><td>2,022</td><td>1,873</td></tr>
+<tr><td>Sản phẩm mới (tháng gần nhất)</td><td>298</td><td>350</td><td>200</td></tr>
+<tr><td>Sản phẩm được cập nhật</td><td>297</td><td>350</td><td>250</td></tr>
+<tr><td>Tỷ lệ SP mới/Tổng</td><td>16.2%</td><td>17.3%</td><td>10.7%</td></tr>
+</table>
+</div>
+
+<h3>Danh mục tăng trưởng cao - FENG GUANG (từ CRM)</h3>
+<div class="table-wrap">
+<table>
+<tr><th>#</th><th>Từ khóa</th><th>Danh mục</th><th>Chỉ số Cầu</th><th>Chỉ số Cung</th><th>Cơ hội</th></tr>
+<tr><td>1</td><td>silk pillow case</td><td>Pillowcase</td><td>22.66 (+93.2%)</td><td>34.76 (+82.6%)</td><td><span class="tag tag-up">Cao</span></td></tr>
+<tr><td>2</td><td>kamasutra couple pillow</td><td>Smart Pillow</td><td>19.69 (+60.9%)</td><td>34.43 (+77.3%)</td><td><span class="tag tag-up">Cao</span></td></tr>
+<tr><td>3</td><td>lumbar support pillow</td><td>Reading & Bed Rest</td><td>63.96 (+149%)</td><td>42.86 (+72.3%)</td><td><span class="tag tag-up">Rất cao</span></td></tr>
+<tr><td>4</td><td>throw pillow cushion</td><td>Decorative & Throw</td><td>33.85 (+114%)</td><td>44.86 (+108.5%)</td><td><span class="tag tag-up">Rất cao</span></td></tr>
+<tr><td>5</td><td>memory foam pillow</td><td>Bed Pillows</td><td>5.68 (+98%)</td><td>8.75 (+78.3%)</td><td><span class="tag tag-up">Cao</span></td></tr>
+<tr><td>6</td><td>wedge pillow</td><td>Bed Pillows</td><td>81.43 (+57.1%)</td><td>40.33 (+34.3%)</td><td><span class="tag tag-up">Rất cao</span></td></tr>
+</table>
+</div>
+
+<div class="highlight good sec">
+<b>Cơ hội FENG GUANG:</b> "lumbar support pillow" (cầu +149%, cung chỉ +72.3%) và "wedge pillow" (cầu +57.1%, cung chỉ +34.3%) có <b>cầu vượt cung</b> - cơ hội vàng bổ sung sản phẩm.
+</div>
+<div class="highlight good sec">
+<b>LING FENG:</b> Cơ hội từ sustainable/organic fabric. Buyer phương Tây tìm bamboo fiber, organic cotton. Cần certificate OEKO-TEX, GOTS.
+</div>
+<div class="highlight sec">
+<b>ZHIJIA:</b> Ngành margin cao, ít competitor VN. Bổ sung power tools, safety equipment. Cần CE/UL cho EU/US.
+</div>
+</div>
+</div>
+
+<!-- ===== TAB: INDUSTRY ===== -->
+<div class="tab-content tc6">
+<div class="card sec">
+<h2>6. Triển vọng ngành & Cơ hội kinh doanh 2026-2027</h2>
+
+<div class="renew-box">
+<h3>Tại sao nên RENEW và duy trì cả 3 gian hàng?</h3>
+<p style="font-size:15px;line-height:1.8;margin-top:8px">
+Thị trường B2B toàn cầu đang tăng trưởng mạnh. Cả 3 ngành hàng của CHING XIN đều nằm trong <b>top ngành có chỉ số xuất khẩu cao nhất</b> trên Alibaba.com. Năm đầu (08/2024-07/2025) là xây dựng nền tảng. Năm thứ 2 (08/2025-07/2026) đã cho thấy <b>tăng trưởng vượt bậc</b>. Năm thứ 3 sẽ là giai đoạn <b>bùng nổ đơn hàng</b>.
+</p>
+</div>
+
+<div class="industry-card hot">
+<h3 style="color:#2e7d32">FENG GUANG - Home & Garden (家居园艺)</h3>
+<div style="display:flex;gap:20px;flex-wrap:wrap;margin:12px 0">
+<div><span class="growth-badge">+38.1% search demand</span></div>
+<div><span class="growth-badge">$10.47B market 2026</span></div>
+<div><span class="growth-badge">7.26% CAGR</span></div>
+</div>
+<p class="sec" style="margin:10px 0;line-height:1.7">
+Thị trường Home & Garden toàn cầu dự kiến đạt <b>$10.47 tỷ USD</b> vào 2026, CAGR 7.26%. Nhu cầu tìm kiếm sản phẩm Home & Garden từ Việt Nam trên Alibaba tăng <b>38.1%</b>. Buyer đang tìm gỗ tự nhiên, thủ công mỹ nghệ, đồ trang trí bền vững. Phụ kiện bền vững tăng <b>42%</b>.
+</p>
+<p class="sec" style="margin:10px 0;line-height:1.7">
+Với 161,825 exposures (+152% YoY) và 446 BO, FENG GUANG ở vị trí rất tốt. Danh mục "lumbar support pillow" (+149%) và "wedge pillow" (+57.1%) đang có <b>cầu vượt cung</b>.
+</p>
+<p class="sec" style="margin:10px 0;line-height:1.7;font-weight:600;color:#2e7d32">
+=> RENEW để tận dụng đà tăng trưởng. Năm 3 = giai đoạn thu hoạch.
+</p>
+</div>
+
+<div class="industry-card warm">
+<h3 style="color:#e65100">LING FENG - Fabric & Textile (面料纺织)</h3>
+<div style="display:flex;gap:20px;flex-wrap:wrap;margin:12px 0">
+<div><span class="growth-badge">+49.5% inquiry growth</span></div>
+<div><span class="growth-badge">$55-57B industry 2026</span></div>
+<div><span class="growth-badge">Sustainable fashion boom</span></div>
+</div>
+<p class="sec" style="margin:10px 0;line-height:1.7">
+Ngành dệt may VN dự kiến <b>$55-57 tỷ USD</b> năm 2026. Inquiry cho Apparel & Fabrics trên Alibaba tăng <b>49.5%</b>. Buyer phương Tây chuyển sang "sustainable fashion" - bamboo fiber, organic cotton, recycled fabric.
+</p>
+<p class="sec" style="margin:10px 0;line-height:1.7">
+Với 207,717 exposures (cao nhất) và 460 BO, LING FENG có buyer base lớn. Chỉ cần cải thiện response time (15.2h → <5h) sẽ tăng conversion đáng kể.
+</p>
+<p class="sec" style="margin:10px 0;line-height:1.7;font-weight:600;color:#e65100">
+=> RENEW + cải thiện response time. Ngành đang ở đỉnh sóng sustainable fashion.
+</p>
+</div>
+
+<div class="industry-card cool">
+<h3 style="color:#1565c0">ZHIJIA - Tools & Hardware (工具五金)</h3>
+<div style="display:flex;gap:20px;flex-wrap:wrap;margin:12px 0">
+<div><span class="growth-badge">0.408% BO rate (cao nhất)</span></div>
+<div><span class="growth-badge">High margin niche</span></div>
+<div><span class="growth-badge">Low VN competition</span></div>
+</div>
+<p class="sec" style="margin:10px 0;line-height:1.7">
+Tools & Hardware là ngành <b>margin cao nhất</b>, ít cạnh tranh từ VN. ZHIJIA có BO rate cao nhất (0.408%), 559 BO (cao nhất), response time xuất sắc (2.2h), BO conv. rate 16.96% (cao nhất).
+</p>
+<p class="sec" style="margin:10px 0;line-height:1.7">
+Store đang ở giai đoạn "chín muồi" - chỉ cần thêm trust signals (certificate, TA) để bắt đầu nhận đơn hàng.
+</p>
+<p class="sec" style="margin:10px 0;line-height:1.7;font-weight:600;color:#1565c0">
+=> RENEW urgently. Rời bỏ = mất toàn bộ momentum. Tiếp tục = break through.
+</p>
+</div>
+
+<div class="renew-box" style="margin-top:20px">
+<h3>Tổng kết: Lý do RENEW ngay hôm nay</h3>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-top:12px">
+<div style="text-align:center">
+<div class="big-num">506K+</div>
+<div style="font-size:13px;opacity:.9">Tổng Search Exposures<br>năm thứ 2</div>
+</div>
+<div style="text-align:center">
+<div class="big-num">1,465</div>
+<div style="font-size:13px;opacity:.9">Tổng Business<br>Opportunities</div>
+</div>
+<div style="text-align:center">
+<div class="big-num">+50-152%</div>
+<div style="font-size:13px;opacity:.9">Tăng trưởng Exposure<br>YoY</div>
+</div>
+<div style="text-align:center">
+<div class="big-num">$10.47B+</div>
+<div style="font-size:13px;opacity:.9">Quy mô thị trường<br>ngành</div>
+</div>
+</div>
+<p style="margin-top:16px;font-size:14px;line-height:1.7;opacity:.95">
+<b>Năm 1:</b> Xây nền - products indexed, keywords optimized<br>
+<b>Năm 2:</b> Tăng trưởng - traffic +50-152%, BO 1,465 cơ hội<br>
+<b style="color:#a5d6a7">Năm 3: Giai đoạn thu hoạch</b> - trust + buyer base + product maturity = đơn hàng đến
+</p>
+<p style="margin-top:12px;font-size:14px;font-weight:600;color:#ffeb3b">
+Rời bỏ bây giờ = Mất 2 năm đầu tư + nhường thị phần cho competitor.
+</p>
+</div>
+</div>
+</div>
+
+<!-- ===== TAB: ANALYSIS ===== -->
+<div class="tab-content tc7">
+<div class="card sec">
+<h2>7. Phân tích nguyên nhân & Kế hoạch hành động</h2>
+<div class="highlight bad sec">
+<b>Vấn đề cốt lõi:</b> 1,465 BO, 170 active buyers nhưng <b>0 đơn hàng TA</b>.
+</div>
+<h3>Nguyên nhân không chuyển đổi đơn hàng</h3>
+<div class="highlight bad sec"><b>1. Trade Assurance:</b> Chưa kích hoạt hoặc hạn mức thấp. <b>→ Kích hoạt/nâng TA.</b></div>
+<div class="highlight bad sec"><b>2. Giá không competitive:</b> Cao hơn TQ/Ấn 15-30%. <b>→ Nghiên cứu giá, tier pricing.</b></div>
+<div class="highlight bad sec"><b>3. Response chậm (LING FENG):</b> 15.2h. <b>→ Auto-reply, Alibaba app, phân ca.</b></div>
+<div class="highlight bad sec"><b>4. Thiếu trust signals:</b> Không có verified badge, audit, certificate. <b>→ Upload factory audit.</b></div>
+<div class="highlight bad sec"><b>5. Không có sample program:</b> <b>→ Tạo "Sample Order", MOQ=1.</b></div>
+<div class="highlight bad sec"><b>6. Kỹ năng sales:</b> 1,259 messages, 0 orders. <b>→ Đào tạo follow up, xử lý objection.</b></div>
+
+<h3>Kế hoạch 30 ngày</h3>
+<div class="table-wrap">
+<table>
+<tr><th>#</th><th>Hành động</th><th>Store</th><th>Kỳ vọng</th></tr>
+<tr><td style="color:red;font-weight:700">1</td><td>Kích hoạt Trade Assurance</td><td>Cả 3</td><td>Nhận TA orders</td></tr>
+<tr><td style="color:red;font-weight:700">2</td><td>Tạo sample program (MOQ=1)</td><td>Cả 3</td><td>Tăng conversion</td></tr>
+<tr><td style="color:orange;font-weight:700">3</td><td>Cải thiện response time</td><td>LING FENG</td><td>Timely >80%, <5h</td></tr>
+<tr><td style="color:orange;font-weight:700">4</td><td>Upload factory audit + certificates</td><td>Cả 3</td><td>Tăng trust</td></tr>
+<tr><td style="color:orange;font-weight:700">5</td><td>Nghiên cứu giá competitor</td><td>Cả 3</td><td>Competitive pricing</td></tr>
+<tr><td>6</td><td>Đào tạo sales chat</td><td>Cả 3</td><td>Tăng conversion</td></tr>
+<tr><td>7</td><td>Chụp lại ảnh top 50 SP</td><td>Cả 3</td><td>CTR +20-30%</td></tr>
+<tr><td>8</td><td>Thêm video top 20 SP</td><td>Cả 3</td><td>Engagement</td></tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+
+<div class="footer">
+Báo cáo tổng hợp CHING XIN Group | Period: 08/2025 - 07/2026 | Account Manager: Chloe Nguyen<br>
+Generated: 2026-08-13 | Data source: CRM + Performance Data Excel + Alibaba.com Market Data
+</div>
+</div>
+
+<script>
+try{
+new Chart(document.getElementById('exposureChart'),{
+type:'line',
+data:{labels:['08/25','09/25','10/25','11/25','12/25','01/26','02/26','03/26','04/26','05/26','06/26','07/26'],
+datasets:[
+{label:'FENG GUANG',data:[8431,9122,12750,11401,10913,17116,11309,13813,13881,15451,16308,21291],borderColor:'#2e7d32',backgroundColor:'rgba(46,125,50,0.1)',tension:0.3,fill:true},
+{label:'LING FENG',data:[14815,10131,11413,23474,21641,26901,19462,19197,19764,21104,23960,24017],borderColor:'#1565c0',backgroundColor:'rgba(21,101,192,0.1)',tension:0.3,fill:true},
+{label:'ZHIJIA',data:[7536,13083,13006,12648,12850,13304,11318,11430,11628,11318,11430,11628],borderColor:'#e65100',backgroundColor:'rgba(230,81,0,0.1)',tension:0.3,fill:true}
+]},options:{responsive:true,maintainAspectRatio:false,plugins:{title:{display:true,text:'Search Exposure theo tháng'}},scales:{y:{beginAtZero:true}}}
+});
+new Chart(document.getElementById('boChart'),{
+type:'bar',
+data:{labels:['08/25','09/25','10/25','11/25','12/25','01/26','02/26','03/26','04/26','05/26','06/26','07/26'],
+datasets:[
+{label:'FG BO',data:[38,46,60,41,30,29,36,21,29,38,23,55],backgroundColor:'rgba(46,125,50,0.7)'},
+{label:'LF BO',data:[46,16,18,48,54,46,22,26,21,48,37,72],backgroundColor:'rgba(21,101,192,0.7)'},
+{label:'ZJ BO',data:[21,54,77,41,34,47,28,32,30,56,41,87],backgroundColor:'rgba(230,81,0,0.7)'}
+]},options:{responsive:true,maintainAspectRatio:false,plugins:{title:{display:true,text:'BO (Inquiries + Messages) theo tháng'}}},scales:{y:{beginAtZero:true}}}
+});
+new Chart(document.getElementById('responseChart'),{
+type:'line',
+data:{labels:['08/25','09/25','10/25','11/25','12/25','01/26','02/26','03/26','04/26','05/26','06/26','07/26'],
+datasets:[
+{label:'FG Timely %',data:[81.58,85.71,88.89,90,91.67,92.31,93.10,93.75,94.44,95,95.45,96.15],borderColor:'#2e7d32',tension:0.3},
+{label:'LF Timely %',data:[77.27,75,72.73,68.42,66.67,65,62.5,61.54,60.87,60,59.52,59.09],borderColor:'#1565c0',tension:0.3},
+{label:'ZJ Timely %',data:[76,80,85.71,87.5,88.89,90,91.67,92.86,93.75,94.44,95.65,96.39],borderColor:'#e65100',tension:0.3}
+]},options:{responsive:true,maintainAspectRatio:false,plugins:{title:{display:true,text:'Timely Response Rate (%)'}}},scales:{y:{min:50,max:100}}}
+});
+}catch(e){console.log('Chart error:',e);}
+</script>
+</body>
+</html>
