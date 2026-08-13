@@ -50,7 +50,7 @@
 </head>
 <body>
   <header class="topbar">
-    <div class="wrap"><div class="brand notranslate" translate="no"><span class="brand-mark" aria-hidden="true"></span>CHING XIN GROUP × Alibaba.com</div><nav class="nav" aria-label="页面导航"><a href="#review">合作回顾</a><a href="#window">流量窗口</a><a href="#factory-proof">金品权益</a><a href="#investment">升级测算</a><a href="#ska-service">SKA服务</a><a href="#quotation-attachment">报价附件</a></nav><div class="lang-switch notranslate" translate="no" aria-label="Language"><button class="lang-btn active" type="button" data-lang="zh-CN">中文</button><button class="lang-btn" type="button" data-lang="en">English</button><button class="lang-btn" type="button" data-lang="vi">Tiếng Việt</button></div></div>
+    <div class="wrap"><div class="brand notranslate" translate="no"><span class="brand-mark" aria-hidden="true"></span>CHING XIN GROUP × Alibaba.com</div><nav class="nav" aria-label="页面导航"><a href="#review">合作回顾</a><a href="#window">流量窗口</a><a href="#factory-proof">金品权益</a><a href="#investment">升级测算</a><a href="#ska-service">SKA服务</a><a href="#quotation-attachment">报价附件</a></nav><div class="lang-switch notranslate" translate="no" aria-label="Language"><a class="lang-btn active" href="?lang=zh-CN" data-lang="zh-CN">中文</a><a class="lang-btn" href="?lang=en" data-lang="en">English</a><a class="lang-btn" href="?lang=vi" data-lang="vi">Tiếng Việt</a></div></div>
   </header>
 
   <main>
@@ -286,7 +286,16 @@
   <script>
     (function(){
       const buttons=[...document.querySelectorAll('.lang-btn')];
-      const stored=localStorage.getItem('chingxin-language')||'zh-CN';
+      const requested=new URLSearchParams(location.search).get('lang');
+      const supported=['zh-CN','en','vi'];
+      const stored=supported.includes(requested)?requested:(localStorage.getItem('chingxin-language')||'zh-CN');
+      localStorage.setItem('chingxin-language',stored);
+      if(stored==='zh-CN'){
+        document.cookie='googtrans=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/';
+        document.cookie='googtrans=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;domain='+location.hostname;
+      }else{
+        document.cookie='googtrans=/zh-CN/'+stored+';path=/';
+      }
       const markActive=lang=>buttons.forEach(btn=>btn.classList.toggle('active',btn.dataset.lang===lang));
       markActive(stored);
       window.googleTranslateElementInit=function(){
@@ -307,7 +316,7 @@
         document.cookie='googtrans=/zh-CN/'+lang+';path=/';
         if(location.protocol!=='file:') location.reload();
       }
-      buttons.forEach(btn=>btn.addEventListener('click',()=>applyLanguage(btn.dataset.lang)));
+      buttons.forEach(btn=>btn.addEventListener('click',()=>localStorage.setItem('chingxin-language',btn.dataset.lang)));
     })();
   </script>
   <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async></script>
